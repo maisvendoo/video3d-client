@@ -44,7 +44,14 @@ osgDB::ReaderWriter::ReadResult ReaderDMD::readNode(std::ifstream &stream,
     dmd_mesh_t mesh = load_dmd(stream);
 
     osg::ref_ptr<osg::Geometry> geom = new osg::Geometry;
-    geom->setVertexArray(mesh.vertices.get());
+
+    if (mesh.is_texture_present)
+    {
+        geom->setVertexArray(mesh.texvertices.get());
+        geom->setTexCoordArray(0, mesh.texcoords.get());
+    }
+    else
+        geom->setVertexArray(mesh.vertices.get());
 
     for (size_t i = 0; i < mesh.faces.size(); ++i)
     {

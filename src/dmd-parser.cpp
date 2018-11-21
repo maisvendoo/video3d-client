@@ -119,8 +119,8 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
     line = getLine(stream);
 
     std::istringstream iss(line);
-    int tex_v_count = 0;
-    int tex_f_count = 0;
+    unsigned int tex_v_count = 0;
+    unsigned int tex_f_count = 0;
     iss >> tex_v_count >> tex_f_count;
 
     line = getLine(stream);
@@ -135,7 +135,7 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
 
     mesh.texcoords = new osg::Vec2Array;
 
-    for (int i = 0; i < tex_v_count; ++i)
+    for (unsigned int i = 0; i < tex_v_count; ++i)
     {
         line = delete_symbol(getLine(stream), '\t');
         std::istringstream ss(line);
@@ -149,7 +149,10 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
     line = getLine(stream);
     line = getLine(stream);
 
-    for (int i = 0; i < tex_f_count; ++i)
+    mesh.texvertices = new osg::Vec3Array;
+    mesh.texvertices->resize(tex_v_count);
+
+    for (unsigned int i = 0; i < tex_f_count; ++i)
     {
         line = delete_symbol(getLine(stream), '\t');
         std::istringstream ss(line);
@@ -158,9 +161,11 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
 
         while (!ss.eof())
         {
+            unsigned long v_idx = mesh.faces[i]->at(texface->size());
             unsigned int idx = 0;
             ss >> idx;
             texface->push_back(idx - 1);
+            mesh.texvertices->at(idx - 1).set(mesh.vertices->at(v_idx));
         }
 
         mesh.texfaces.push_back(texface);
