@@ -49,15 +49,15 @@ osgDB::ReaderWriter::ReadResult ReaderDMD::readNode(std::ifstream &stream,
     {
         geom->setVertexArray(mesh.texvertices.get());
         geom->setTexCoordArray(0, mesh.texcoords.get());
+
+        for (size_t i = 0; i < mesh.texfaces.size(); ++i)
+            geom->addPrimitiveSet(mesh.texfaces[i].get());
     }
     else
+    {
         geom->setVertexArray(mesh.vertices.get());
 
-    for (size_t i = 0; i < mesh.faces.size(); ++i)
-    {
-        if (mesh.is_texture_present)
-            geom->addPrimitiveSet(mesh.texfaces[i].get());
-        else
+        for (size_t i = 0; i < mesh.faces.size(); ++i)
             geom->addPrimitiveSet(mesh.faces[i].get());
     }
 
