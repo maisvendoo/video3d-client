@@ -143,6 +143,8 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
         osg::Vec2 texel;
         ss >> texel.x() >> texel.y();
 
+        texel.y() = 1.0f - texel.y();
+
         mesh.texcoords->push_back(texel);
     }
 
