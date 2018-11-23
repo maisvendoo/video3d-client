@@ -7,6 +7,9 @@ int main(int argc, char *argv[])
 {
     (void) argc; (void) argv;
 
+    osg::ref_ptr<RoutePath> routePath = new RoutePath("../routes/Moskow-Vjazma/route1.trk");
+    osg::Vec3 pos = routePath->getPosition(10000.0f);
+
     model_info_t model_info;
     model_info.filepath = "../data/park_pass.dmd";
     model_info.texture_path = "../data/park.tga";

@@ -8,5 +8,6 @@
 
 #include    "texture-loader.h"
 #include    "model-loader.h"
+#include    "route-path.h"
 
 #endif // MAIN_H
