@@ -10,4 +10,6 @@
 #include    "model-loader.h"
 #include    "route-path.h"
 
+#include    "scene-loader.h"
+
 #endif // MAIN_H

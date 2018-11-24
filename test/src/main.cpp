@@ -5,9 +5,13 @@
 //------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-    (void) argc; (void) argv;
+    osg::ArgumentParser args(&argc, argv);
+    std::string routeDir;
+    args.read("--route", routeDir);
 
-    osg::ref_ptr<RoutePath> routePath = new RoutePath("../routes/Moskow-Vjazma/route1.trk");
+    SceneLoader scnLoader(routeDir);
+
+    osg::ref_ptr<RoutePath> routePath = new RoutePath(routeDir + "/route1.trk");
     osg::Vec3 pos = routePath->getPosition(10000.0f);
 
     model_info_t model_info;
