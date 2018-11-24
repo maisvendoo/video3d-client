@@ -11,6 +11,7 @@ SceneLoader::SceneLoader(std::string routeDir)
     : routeDir(routeDir)
 {
     loadDataFile(this->routeDir + "/objects.ref");
+    loadDataFile(this->routeDir + "/route1.map");
 }
 
 //------------------------------------------------------------------------------
@@ -94,5 +95,32 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
 //------------------------------------------------------------------------------
 ReadResult SceneLoader::loadObjectMap(std::istream &stream)
 {
-    return FILE_NOT_HANDLED;
+    while (!stream.eof())
+    {
+        std::string line = "";
+        std::getline(stream, line);
+
+        if (line.at(0) == ';')
+            continue;
+
+        std::string tmp = delete_symbol(line, '\r');
+        tmp = delete_symbol(tmp, ';');
+        std::replace(tmp.begin(), tmp.end(), ',', ' ');
+
+        std::istringstream ss(tmp);
+
+        object_map_t object;
+
+        ss >> object.name
+           >> object.position.x() >> object.position.y() >> object.position.z()
+           >> object.attitude.x() >> object.attitude.y() >> object.attitude.z();
+
+        std::getline(stream, line);
+
+        object.caption = delete_symbol(line, '\r');
+
+        objectMap.insert(std::pair<std::string, object_map_t>(object.name, object));
+    }
+
+    return READ_SUCCESS;
 }
