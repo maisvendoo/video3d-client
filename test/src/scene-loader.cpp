@@ -4,6 +4,8 @@
 
 #include    <sstream>
 
+#include    <osg/MatrixTransform>
+
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
@@ -12,6 +14,17 @@ SceneLoader::SceneLoader(std::string routeDir)
 {
     loadDataFile(this->routeDir + "/objects.ref");
     loadDataFile(this->routeDir + "/route1.map");
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+osg::Group *SceneLoader::getRoot()
+{
+    if (root.valid())
+        return root.release();
+    else
+        return nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -84,6 +97,12 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
         object.model_path = routeDir + object.model_path;
         object.texture_path = routeDir + object.texture_path;
 
+        model_info_t model_info;
+        model_info.filepath = object.model_path;
+        model_info.texture_path = object.texture_path;
+
+        object.model_node = createLODNode(model_info);
+
         objectRef.insert(std::pair<std::string, object_ref_t>(object.name, object));
     }
 
@@ -95,13 +114,23 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
 //------------------------------------------------------------------------------
 ReadResult SceneLoader::loadObjectMap(std::istream &stream)
 {
+    std::string prev_name = "";
+
+    root = new osg::Group;
+
     while (!stream.eof())
     {
         std::string line = "";
         std::getline(stream, line);
 
+        if (line.empty())
+            continue;
+
         if (line.at(0) == ';')
             continue;
+
+        if (line.at(0) == ',')
+            line = prev_name + line;
 
         std::string tmp = delete_symbol(line, '\r');
         tmp = delete_symbol(tmp, ';');
@@ -117,9 +146,24 @@ ReadResult SceneLoader::loadObjectMap(std::istream &stream)
 
         std::getline(stream, line);
 
+        prev_name = object.name;
+
         object.caption = delete_symbol(line, '\r');
 
-        objectMap.insert(std::pair<std::string, object_map_t>(object.name, object));
+        object.attitude.x() *= osg::PIf / 180.0f;
+        object.attitude.y() *= osg::PIf / 180.0f;
+        object.attitude.z() *= osg::PIf / 180.0f;
+
+        osg::ref_ptr<osg::MatrixTransform> transform = new osg::MatrixTransform;
+
+        osg::Matrixf m1 = osg::Matrixf::translate(object.position);
+        osg::Matrixf m2 = osg::Matrixf::rotate(-object.attitude.z(), osg::Vec3(0, 0, 1));
+        osg::Matrixf m3 = osg::Matrixf::rotate(-object.attitude.x(), osg::Vec3(1, 0, 0));
+        osg::Matrixf m4 = osg::Matrixf::rotate(-object.attitude.y(), osg::Vec3(0, 1, 0));
+
+        transform->setMatrix(m2 * m3 * m4 * m1);
+        transform->addChild(objectRef[object.name].model_node.get());
+        root->addChild(transform.get());
     }
 
     return READ_SUCCESS;

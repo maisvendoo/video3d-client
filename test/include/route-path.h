@@ -24,6 +24,7 @@ public:
     ~RoutePath() {}
 
     osg::Vec3 getPosition(float railway_coord);
+    osg::Vec3 getPosition(float railway_coord, osg::Vec3 &orth);
 
 protected:
 

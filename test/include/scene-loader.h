@@ -3,6 +3,7 @@
 
 #include    <string>
 #include    <map>
+#include    <vector>
 #include    <fstream>
 
 #include    <osgDB/FileUtils>
@@ -28,12 +29,16 @@ public:
     SceneLoader(std::string routeDir);
     ~SceneLoader() {}
 
+    osg::Group *getRoot();
+
 protected:
 
     std::string routeDir;
 
     std::map<std::string, object_ref_t> objectRef;
-    std::map<std::string, object_map_t> objectMap;
+    std::vector<object_map_t> objectMap;
+
+    osg::ref_ptr<osg::Group> root;
 
     ReadResult loadDataFile(const std::string &filepath);
 

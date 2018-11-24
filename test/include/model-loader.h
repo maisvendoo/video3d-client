@@ -11,9 +11,7 @@ struct model_info_t
 {
     float       view_distance;
     std::string filepath;
-    std::string texture_path;
-    osg::Vec3   position;
-    osg::Vec3   attitude;
+    std::string texture_path;    
 
     model_info_t()
         : view_distance(1000.0f)
@@ -25,6 +23,6 @@ struct model_info_t
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-osg::Node *createLODNode(const model_info_t &model_info);
+osg::PagedLOD *createLODNode(const model_info_t &model_info);
 
 #endif // MODEL_LOADER_H

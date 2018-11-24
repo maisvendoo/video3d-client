@@ -4,16 +4,18 @@
 #include    <string>
 
 #include    <osg/Geometry>
+#include    <osg/PagedLOD>
 
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
 struct object_ref_t
 {
-    std::string     name;
-    std::string     mode;
-    std::string     model_path;
-    std::string     texture_path;
+    std::string                 name;
+    std::string                 mode;
+    std::string                 model_path;
+    std::string                 texture_path;
+    osg::ref_ptr<osg::PagedLOD> model_node;
 
     object_ref_t()
         : name("")

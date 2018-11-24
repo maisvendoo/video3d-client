@@ -3,6 +3,7 @@
 
 #include    <osg/Group>
 #include    <osg/BlendFunc>
+#include    <osg/MatrixTransform>
 #include    <osgViewer/Viewer>
 #include    <osgDB/ReadFile>
 

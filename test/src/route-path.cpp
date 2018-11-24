@@ -28,6 +28,22 @@ osg::Vec3 RoutePath::getPosition(float railway_coord)
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
+osg::Vec3 RoutePath::getPosition(float railway_coord, osg::Vec3 &orth)
+{
+    track_t track = findTrack(railway_coord);
+
+    float motion = railway_coord - track.rail_coord;
+    osg::Vec3 motion_vec = track.orth *= motion;
+    osg::Vec3 pos = track.begin_point + motion_vec;
+
+    orth = track.orth;
+
+    return pos;
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
 bool RoutePath::load(const std::string &track_file_path)
 {
     std::string ext = osgDB::getLowerCaseFileExtension(track_file_path);
