@@ -4,6 +4,7 @@
 #include    <osg/Group>
 #include    <osg/BlendFunc>
 #include    <osg/MatrixTransform>
+#include    <osg/CullFace>
 #include    <osgViewer/Viewer>
 #include    <osgDB/ReadFile>
 

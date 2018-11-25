@@ -11,30 +11,33 @@ int main(int argc, char *argv[])
 
     SceneLoader scnLoader(routeDir);    
 
-    osg::ref_ptr<osg::Group> root = scnLoader.getRoot();
-
-    osg::ref_ptr<osg::MatrixTransform> trans1 = new osg::MatrixTransform;
-
-    model_info_t model_info;
-    model_info.filepath = routeDir + "/models/sky.dmd";
-    model_info.texture_path = routeDir + "/textures/sky_day.bmp";
-    model_info.view_distance = 10000.0f;
-
-    osg::ref_ptr<osg::Node> sky = osgDB::readNodeFile(model_info.filepath);
-    osg::ref_ptr<osg::Image> image = osgDB::readImageFile(model_info.texture_path);
-
-    if (image.valid())
-    {
-        osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D(image.get());
-        sky->getOrCreateStateSet()->setTextureAttributeAndModes(0, texture.get());
-    }
-
-    trans1->addChild(sky.get());
-    root->addChild(trans1.get());
+    osg::ref_ptr<osg::Group> root = scnLoader.getRoot();    
 
     root->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     root->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
     root->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
+    root->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
+
+    osg::ref_ptr<osg::CullFace> cull = new osg::CullFace;
+    cull->setMode(osg::CullFace::BACK);
+    root->getOrCreateStateSet()->setAttributeAndModes(cull, osg::StateAttribute::ON);
+
+    osg::ref_ptr<osg::Light> sun = new osg::Light;
+    sun->setLightNum(0);
+    sun->setDiffuse(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    sun->setAmbient(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    sun->setSpecular(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    sun->setPosition(osg::Vec4(0.0f, 0.0f, 0.0f, 0.0f));
+
+    float alpha = osg::PIf / 2.0f;
+    osg::Vec3 sunDir(0.0f, cosf(alpha), -sinf(alpha));
+    sun->setDirection(sunDir);
+
+    osg::ref_ptr<osg::LightSource> light0 = new osg::LightSource;
+    light0->setLight(sun);
+
+    root->getOrCreateStateSet()->setMode(GL_LIGHT0, osg::StateAttribute::ON);
+    root->addChild(light0.get());
 
     osgViewer::Viewer viewer;
     viewer.setSceneData(root.get());
@@ -56,9 +59,8 @@ int main(int argc, char *argv[])
 
         osg::Matrix m = osg::Matrix::translate(pos *= -1.0f);
         m *= osg::Matrix::rotate(-osg::PI / 2, osg::Vec3(1.0f, 0.0f, 0.0f));
-        m *= osg::Matrix::rotate(angle, osg::Vec3(0.0f, 1.0f, 0.0f));
+        m *= osg::Matrix::rotate(static_cast<double>(angle), osg::Vec3(0.0f, 1.0f, 0.0f));
 
-        trans1->setMatrix(osg::Matrix::translate(pos));
         viewer.getCamera()->setViewMatrix(m);
         x += 1.0f;
 
