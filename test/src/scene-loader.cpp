@@ -101,6 +101,11 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
         model_info.filepath = object.model_path;
         model_info.texture_path = object.texture_path;
 
+        if (mode == "mipmap")
+            model_info.mipmap = true;
+        else
+            model_info.mipmap = false;
+
         object.model_node = createLODNode(model_info);
 
         objectRef.insert(std::pair<std::string, object_ref_t>(object.name, object));
@@ -154,16 +159,19 @@ ReadResult SceneLoader::loadObjectMap(std::istream &stream)
         object.attitude.y() *= osg::PIf / 180.0f;
         object.attitude.z() *= osg::PIf / 180.0f;
 
-        osg::ref_ptr<osg::MatrixTransform> transform = new osg::MatrixTransform;
+        if (objectRef[object.name].model_node.valid())
+        {
+            osg::ref_ptr<osg::MatrixTransform> transform = new osg::MatrixTransform;
 
-        osg::Matrixf m1 = osg::Matrixf::translate(object.position);
-        osg::Matrixf m2 = osg::Matrixf::rotate(-object.attitude.z(), osg::Vec3(0, 0, 1));
-        osg::Matrixf m3 = osg::Matrixf::rotate(-object.attitude.x(), osg::Vec3(1, 0, 0));
-        osg::Matrixf m4 = osg::Matrixf::rotate(-object.attitude.y(), osg::Vec3(0, 1, 0));
+            osg::Matrixf m1 = osg::Matrixf::translate(object.position);
+            osg::Matrixf m2 = osg::Matrixf::rotate(-object.attitude.z(), osg::Vec3(0, 0, 1));
+            osg::Matrixf m3 = osg::Matrixf::rotate(-object.attitude.x(), osg::Vec3(1, 0, 0));
+            osg::Matrixf m4 = osg::Matrixf::rotate(-object.attitude.y(), osg::Vec3(0, 1, 0));
+            transform->setMatrix(m2 * m3 * m4 * m1);
 
-        transform->setMatrix(m2 * m3 * m4 * m1);
-        transform->addChild(objectRef[object.name].model_node.get());
-        root->addChild(transform.get());
+            transform->addChild(objectRef[object.name].model_node.get());
+            root->addChild(transform.get());
+        }
     }
 
     return READ_SUCCESS;

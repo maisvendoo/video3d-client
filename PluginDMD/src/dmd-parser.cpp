@@ -141,7 +141,8 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
         std::istringstream ss(line);
 
         osg::Vec2 texel;
-        ss >> texel.x() >> texel.y();
+        float z = 0;
+        ss >> texel.x() >> texel.y() >> z;
 
         texel.y() = 1.0f - texel.y();
 

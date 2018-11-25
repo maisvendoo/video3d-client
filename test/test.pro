@@ -1,5 +1,7 @@
 TEMPLATE = app
 
+CONFIG -= qt
+
 TARGET = test
 
 DESTDIR = ../../bin

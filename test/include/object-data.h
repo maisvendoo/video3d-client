@@ -5,6 +5,7 @@
 
 #include    <osg/Geometry>
 #include    <osg/PagedLOD>
+#include    <osg/ProxyNode>
 
 //------------------------------------------------------------------------------
 //

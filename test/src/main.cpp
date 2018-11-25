@@ -34,10 +34,12 @@ int main(int argc, char *argv[])
 
     root->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     root->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+    root->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
 
     osgViewer::Viewer viewer;
     viewer.setSceneData(root.get());
     viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
+    viewer.setUpViewOnSingleScreen(0);
 
     osg::ref_ptr<RoutePath> routePath = new RoutePath(routeDir + "/route1.trk");
     float x = 400.0f;
@@ -45,7 +47,7 @@ int main(int argc, char *argv[])
     while (!viewer.done())
     {
         osg::Vec3 pos = routePath->getPosition(x) + osg::Vec3(0.0f, 0.0f, 3.0f);
-        osg::Vec3 forward = routePath->getPosition(x + 0.01f) + osg::Vec3(0.0f, 0.0f, 3.0f);
+        osg::Vec3 forward = routePath->getPosition(x + 100.0f) + osg::Vec3(0.0f, 0.0f, 3.0f);
 
         osg::Vec3 orth = forward - pos;
         orth = orth *= (1 / orth.length());
