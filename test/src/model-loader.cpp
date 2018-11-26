@@ -33,6 +33,13 @@ osg::PagedLOD *createLODNode(const model_info_t &model_info)
     texture->setResizeNonPowerOfTwoHint(false);
     texture->setUnRefImageDataAfterApply(true);
 
+    std::string ext = osgDB::getLowerCaseFileExtension(model_info.texture_path);
+
+    if (ext == "tga")
+        pagedLOD->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+    else
+        pagedLOD->getOrCreateStateSet()->setRenderingHint(osg::StateSet::OPAQUE_BIN);
+
     pagedLOD->getOrCreateStateSet()->setTextureAttributeAndModes(0, texture.get());
 
     return pagedLOD.release();

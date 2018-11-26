@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
     osg::ref_ptr<osg::Group> root = scnLoader.getRoot();    
 
     root->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-    root->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
     root->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
     root->getOrCreateStateSet()->setMode(GL_ALPHA, osg::StateAttribute::ON);
     root->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
