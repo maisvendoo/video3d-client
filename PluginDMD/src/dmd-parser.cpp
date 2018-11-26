@@ -133,7 +133,7 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
 
     mesh.is_texture_present = true;
 
-    mesh.texcoords = new osg::Vec2Array;
+    mesh.texcoords = new osg::Vec2Array;    
 
     for (unsigned int i = 0; i < tex_v_count; ++i)
     {
@@ -147,7 +147,7 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
         texel.y() = 1.0f - texel.y();
 
         mesh.texcoords->push_back(texel);
-    }
+    }    
 
     line = getLine(stream);
     line = getLine(stream);

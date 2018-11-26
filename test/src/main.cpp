@@ -9,6 +9,9 @@ int main(int argc, char *argv[])
     std::string routeDir;
     args.read("--route", routeDir);
 
+    //FileSystem &fs = FileSystem::getInstance();
+    //fs.setRouteRootDir(routeDir);
+
     SceneLoader scnLoader(routeDir);    
 
     osg::ref_ptr<osg::Group> root = scnLoader.getRoot();    
@@ -16,6 +19,7 @@ int main(int argc, char *argv[])
     root->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     root->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
     root->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
+    root->getOrCreateStateSet()->setMode(GL_ALPHA, osg::StateAttribute::ON);
     root->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
 
     osg::ref_ptr<osg::CullFace> cull = new osg::CullFace;
@@ -29,7 +33,7 @@ int main(int argc, char *argv[])
     sun->setSpecular(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
     sun->setPosition(osg::Vec4(0.0f, 0.0f, 0.0f, 0.0f));
 
-    float alpha = osg::PIf / 2.0f;
+    float alpha = osg::PIf / 4.0f;
     osg::Vec3 sunDir(0.0f, cosf(alpha), -sinf(alpha));
     sun->setDirection(sunDir);
 

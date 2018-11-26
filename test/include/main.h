@@ -14,4 +14,6 @@
 
 #include    "scene-loader.h"
 
+#include    "filesystem.h"
+
 #endif // MAIN_H

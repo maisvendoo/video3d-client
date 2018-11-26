@@ -19,7 +19,7 @@ osg::PagedLOD *createLODNode(const model_info_t &model_info)
     pagedLOD->setRange(0, 0.0f, model_info.view_distance);
 
     osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
-    texture->setWrap(osg::Texture2D::WRAP_R, osg::Texture::REPEAT);
+    texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture::REPEAT);
     texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture::REPEAT);
 
     if (model_info.mipmap)

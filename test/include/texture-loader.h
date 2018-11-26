@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Texture loader callback
+//      (c) maisvendoo, 22/11/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Texture loader callback
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 22/11/2018
+ */
+
 #ifndef     TEXTURE_LOADER_H
 #define     TEXTURE_LOADER_H
 
