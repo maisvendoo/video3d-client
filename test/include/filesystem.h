@@ -19,6 +19,12 @@ public:
 
     void setRouteRootDir(const std::string &path);
 
+    std::string getRouteRootDir() const;
+
+    std::string getNativePath(const std::string &path) const;
+
+    char separator() const;
+
 private:
 
     std::string routeRootDir;

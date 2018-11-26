@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 osg::PagedLOD *createLODNode(const model_info_t &model_info)
 {
-    std::string fileName = osgDB::findDataFile(model_info.filepath);
+    std::string fileName = osgDB::findDataFile(model_info.filepath, osgDB::CaseSensitivity::CASE_INSENSITIVE);
 
     if (fileName.empty())
         return nullptr;

@@ -9,8 +9,8 @@ int main(int argc, char *argv[])
     std::string routeDir;
     args.read("--route", routeDir);
 
-    //FileSystem &fs = FileSystem::getInstance();
-    //fs.setRouteRootDir(routeDir);
+    FileSystem &fs = FileSystem::getInstance();
+    fs.setRouteRootDir(routeDir);
 
     SceneLoader scnLoader(routeDir);    
 
@@ -25,29 +25,18 @@ int main(int argc, char *argv[])
     cull->setMode(osg::CullFace::BACK);
     root->getOrCreateStateSet()->setAttributeAndModes(cull, osg::StateAttribute::ON);
 
-    osg::ref_ptr<osg::Light> sun = new osg::Light;
-    sun->setLightNum(0);
-    sun->setDiffuse(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    sun->setAmbient(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    sun->setSpecular(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    sun->setPosition(osg::Vec4(0.0f, 0.0f, 0.0f, 0.0f));
-
-    float alpha = osg::PIf / 4.0f;
-    osg::Vec3 sunDir(0.0f, cosf(alpha), -sinf(alpha));
-    sun->setDirection(sunDir);
-
-    osg::ref_ptr<osg::LightSource> light0 = new osg::LightSource;
-    light0->setLight(sun);
-
-    root->getOrCreateStateSet()->setMode(GL_LIGHT0, osg::StateAttribute::ON);
-    root->addChild(light0.get());
+    initEnvironmentLight(root.get(),
+                         osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f),
+                         1.0f,
+                         180.0f,
+                         45.0f);
 
     osgViewer::Viewer viewer;
     viewer.setSceneData(root.get());
     viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
     viewer.setUpViewOnSingleScreen(0);
 
-    osg::ref_ptr<RoutePath> routePath = new RoutePath(routeDir + "/route1.trk");
+    osg::ref_ptr<RoutePath> routePath = new RoutePath(fs.getRouteRootDir() + fs.separator() + "route1.trk");
     float x = 400.0f;
 
     while (!viewer.done())

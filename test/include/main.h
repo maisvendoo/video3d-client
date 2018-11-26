@@ -13,6 +13,7 @@
 #include    "route-path.h"
 
 #include    "scene-loader.h"
+#include    "lighting.h"
 
 #include    "filesystem.h"
 

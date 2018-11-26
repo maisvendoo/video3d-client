@@ -6,14 +6,18 @@
 
 #include    <osg/MatrixTransform>
 
+#include    "filesystem.h"
+
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-SceneLoader::SceneLoader(std::string routeDir)
-    : routeDir(routeDir)
+SceneLoader::SceneLoader(std::string routeDir)    
 {
-    loadDataFile(this->routeDir + "/objects.ref");
-    loadDataFile(this->routeDir + "/route1.map");
+    FileSystem &fs = FileSystem::getInstance();
+    this->routeDir = fs.getNativePath(routeDir);
+
+    loadDataFile(this->routeDir + fs.separator() + "objects.ref");
+    loadDataFile(this->routeDir + fs.separator() + "route1.map");
 }
 
 //------------------------------------------------------------------------------
@@ -92,8 +96,10 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
 
         ss >> object.name >> object.model_path >> object.texture_path;
 
-        std::replace(object.model_path.begin(), object.model_path.end(), '\\', '/');
-        std::replace(object.texture_path.begin(), object.texture_path.end(), '\\', '/');
+        FileSystem &fs = FileSystem::getInstance();
+        object.model_path = fs.getNativePath(object.model_path);
+        object.texture_path = fs.getNativePath(object.texture_path);
+
         object.model_path = routeDir + object.model_path;
         object.texture_path = routeDir + object.texture_path;
 
