@@ -5,6 +5,8 @@
 #include    <osg/BlendFunc>
 #include    <osg/MatrixTransform>
 #include    <osg/CullFace>
+#include    <osg/Texture>
+#include    <osgDB/DatabasePager>
 #include    <osgViewer/Viewer>
 #include    <osgDB/ReadFile>
 

@@ -31,10 +31,13 @@ int main(int argc, char *argv[])
                          180.0f,
                          45.0f);
 
+
+
+
     osgViewer::Viewer viewer;
     viewer.setSceneData(root.get());
     viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
-    viewer.setUpViewOnSingleScreen(0);
+    viewer.setUpViewOnSingleScreen(0);   
 
     osg::ref_ptr<RoutePath> routePath = new RoutePath(fs.getRouteRootDir() + fs.separator() + "route1.trk");
     float x = 400.0f;

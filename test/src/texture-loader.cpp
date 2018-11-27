@@ -18,6 +18,8 @@
 #include    <osgDB/FileNameUtils>
 #include    <osgDB/WriteFile>
 
+#include    "file-funcs.h"
+
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
@@ -30,6 +32,7 @@ void LoadTextureCallback::operator()(osg::StateAttribute *sa, osg::NodeVisitor *
 
     if (texture_path.empty())
         return;
+
 
     std::string fileName = osgDB::findDataFile(texture_path, osgDB::CaseSensitivity::CASE_INSENSITIVE);
 
@@ -50,7 +53,7 @@ void LoadTextureCallback::operator()(osg::StateAttribute *sa, osg::NodeVisitor *
             image->flipVertical();
         }
 
-        osg::Texture2D *texture = static_cast<osg::Texture2D *>(sa);
+        osg::Texture2D *texture = static_cast<osg::Texture2D *>(sa);        
         texture->setImage(image.get());
         is_textured = true;
     }

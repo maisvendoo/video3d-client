@@ -4,6 +4,8 @@
 #include    <osgDB/FileUtils>
 #include    <osgDB/FileNameUtils>
 
+#include    "file-funcs.h"
+
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
@@ -32,6 +34,7 @@ osg::PagedLOD *createLODNode(const model_info_t &model_info)
     texture->setUpdateCallback(new LoadTextureCallback(model_info.texture_path));
     texture->setResizeNonPowerOfTwoHint(false);
     texture->setUnRefImageDataAfterApply(true);
+    //texture->setInternalFormatMode(osg::Texture2D::USE_S3TC_DXT1_COMPRESSION);
 
     std::string ext = osgDB::getLowerCaseFileExtension(model_info.texture_path);
 
