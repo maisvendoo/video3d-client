@@ -7,6 +7,7 @@
 #include    <osg/MatrixTransform>
 
 #include    "filesystem.h"
+#include    "texture-loader.h"
 
 //------------------------------------------------------------------------------
 //
@@ -15,6 +16,8 @@ SceneLoader::SceneLoader(std::string routeDir)
 {
     FileSystem &fs = FileSystem::getInstance();
     this->routeDir = fs.getNativePath(routeDir);
+
+    root = new osg::Group;
 
     loadDataFile(this->routeDir + fs.separator() + "objects.ref");
     loadDataFile(this->routeDir + fs.separator() + "route1.map");
@@ -104,6 +107,7 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
         object.texture_path = routeDir + object.texture_path;
 
         model_info_t model_info;
+        model_info.name = object.name;
         model_info.filepath = object.model_path;
         model_info.texture_path = object.texture_path;
 
@@ -112,7 +116,7 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
         else
             model_info.mipmap = false;
 
-        object.model_node = createLODNode(model_info);
+        object.model_node = createLODNode(model_info);        
 
         objectRef.insert(std::pair<std::string, object_ref_t>(object.name, object));
     }
@@ -125,9 +129,7 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
 //------------------------------------------------------------------------------
 ReadResult SceneLoader::loadObjectMap(std::istream &stream)
 {
-    std::string prev_name = "";
-
-    root = new osg::Group;
+    std::string prev_name = "";    
 
     while (!stream.eof())
     {
