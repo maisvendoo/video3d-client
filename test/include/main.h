@@ -5,10 +5,11 @@
 #include    <osg/BlendFunc>
 #include    <osg/MatrixTransform>
 #include    <osg/CullFace>
+#include    <osg/Texture>
+#include    <osgDB/DatabasePager>
 #include    <osgViewer/Viewer>
 #include    <osgDB/ReadFile>
 
-#include    "texture-loader.h"
 #include    "model-loader.h"
 #include    "route-path.h"
 

@@ -31,9 +31,13 @@ int main(int argc, char *argv[])
                          180.0f,
                          45.0f);
 
+
+
+
     osgViewer::Viewer viewer;
     viewer.setSceneData(root.get());
     viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
+
     viewer.getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     viewer.setUpViewOnSingleScreen(0);
 
