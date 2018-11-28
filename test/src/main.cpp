@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
     SceneLoader scnLoader(routeDir);    
 
-    osg::ref_ptr<osg::Group> root = scnLoader.getRoot();    
+    osg::ref_ptr<osg::Group> root = scnLoader.getRoot();
 
     root->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     root->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
@@ -32,6 +32,9 @@ int main(int argc, char *argv[])
                          45.0f);
 
     osgViewer::Viewer viewer;
+
+    //viewer.getDatabasePager()->setTargetMaximumNumberOfPageLOD(1);
+
     viewer.setSceneData(root.get());
     viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
 
@@ -39,14 +42,19 @@ int main(int argc, char *argv[])
     viewer.setUpViewOnSingleScreen(0);
 
     osg::ref_ptr<RoutePath> routePath = new RoutePath(fs.getRouteRootDir() + fs.separator() + "route1.trk");
+
+    osg::ref_ptr<osg::Group> track = routePath->getTrackLine(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+    //if (track.valid())
+      //  root->addChild(track.get());
+
     float x = 400.0f;
 
     while (!viewer.done())
     {
-        osg::Vec3 pos = routePath->getPosition(x) + osg::Vec3(0.0f, 0.0f, 3.0f);
-        osg::Vec3 forward = routePath->getPosition(x + 100.0f) + osg::Vec3(0.0f, 0.0f, 3.0f);
+        osg::Vec3 orth;
+        osg::Vec3 pos = routePath->getPosition(x, orth) + osg::Vec3(0.0f, 0.0f, 3.0f);
 
-        osg::Vec3 orth = forward - pos;
         orth = orth *= (1 / orth.length());
 
         float angle = asinf(orth.x());
@@ -56,7 +64,7 @@ int main(int argc, char *argv[])
         m *= osg::Matrix::rotate(static_cast<double>(angle), osg::Vec3(0.0f, 1.0f, 0.0f));
 
         viewer.getCamera()->setViewMatrix(m);
-        x += 1.0f;
+        x += 0.5f;
 
         viewer.frame();
     }

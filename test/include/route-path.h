@@ -50,6 +50,8 @@ public:
 
     float getLength() const;
 
+    osg::Group *getTrackLine(const osg::Vec4 &color);
+
 protected:
 
     float                   length;

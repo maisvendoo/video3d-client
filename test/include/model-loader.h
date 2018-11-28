@@ -19,7 +19,7 @@ struct model_info_t
     bool        mipmap;
 
     model_info_t()
-        : view_distance(1500.0f)
+        : view_distance(2000.0f)
     {
 
     }

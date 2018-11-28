@@ -4,6 +4,10 @@
 #include    <sstream>
 #include    <vector>
 
+#include    <osg/PagedLOD>
+#include    <osg/Geode>
+#include    <osg/Material>
+
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
@@ -54,6 +58,50 @@ float RoutePath::getLength() const
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
+osg::Group *RoutePath::getTrackLine(const osg::Vec4 &color)
+{
+    if (track_data.size() == 0)
+        return nullptr;
+
+    osg::ref_ptr<osg::Group> trackLine = new osg::Group;
+
+
+    for (auto it = track_data.begin(); it != track_data.end(); ++it)
+    {
+        track_t track = *it;
+        osg::ref_ptr<osg::PagedLOD> line = new osg::PagedLOD;
+        line->setRange(0, 0.0f, FLT_MAX);
+
+        osg::ref_ptr<osg::Geometry> geom = new osg::Geometry;
+        osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
+        osg::Vec3 h(0.0f, 0.0f, 1.0f);
+        vertices->push_back(track.begin_point + h);
+        vertices->push_back(track.end_point + h);
+        geom->setVertexArray(vertices.get());
+
+        osg::ref_ptr<osg::DrawArrays> da = new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, static_cast<int>(vertices->size()));
+        geom->addPrimitiveSet(da.get());
+
+        osg::ref_ptr<osg::Geode> geode = new osg::Geode;
+        geode->addDrawable(geom.get());
+        geode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+        osg::ref_ptr<osg::Material> material = new osg::Material;
+        material->setAmbient(osg::Material::FRONT_AND_BACK, color);
+        material->setDiffuse(osg::Material::FRONT_AND_BACK, color);
+        material->setEmission(osg::Material::FRONT_AND_BACK, color);
+        geode->getOrCreateStateSet()->setAttribute(material.get());
+
+        line->addChild(geode.get());
+        trackLine->addChild(line.get());
+    }
+
+    return trackLine.release();
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
 bool RoutePath::load(const std::string &track_file_path)
 {
     std::string ext = osgDB::getLowerCaseFileExtension(track_file_path);
@@ -79,8 +127,6 @@ bool RoutePath::load(const std::string &track_file_path)
 //------------------------------------------------------------------------------
 bool RoutePath::load(std::istream &stream)
 {
-    float rail_coord = 0.0f;
-
     track_data_t tmp_data;
 
     while (!stream.eof())
@@ -109,10 +155,7 @@ bool RoutePath::load(std::istream &stream)
 
         osg::Vec3 up(0, 0, 1);
         track.right = track.orth ^ up;
-        track.right = track.right *= (1 / track.right.length());
-
-        track.rail_coord = rail_coord;
-        rail_coord += track.length;
+        track.right = track.right *= (1 / track.right.length());        
 
         tmp_data.push_back(track);
     }
@@ -120,13 +163,19 @@ bool RoutePath::load(std::istream &stream)
     track_data.push_back(*tmp_data.begin());
     length += (*tmp_data.begin()).length;
 
+    float rail_coord = 0.0f;
+
     for (auto it = tmp_data.begin(); (*it).next_uid != -2; ++it)
     {
         track_t cur_track = *it;
         track_t next_track = tmp_data.at(static_cast<size_t>(cur_track.next_uid - 1));
         track_data[track_data.size() - 1].end_point = next_track.begin_point;
+        length += next_track.length;
+
+        rail_coord += track_data.at(track_data.size() - 1).length;
+        next_track.rail_coord = rail_coord;
+
         track_data.push_back(next_track);
-        length += cur_track.length;
     }
 
     return false;
@@ -169,7 +218,7 @@ track_t RoutePath::findTrack(float railway_coord)
         idx = (left_idx + right_idx) / 2;
     }
 
-    return track;
+    return track_data.at(idx);
 }
 
 

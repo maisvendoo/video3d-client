@@ -35,7 +35,7 @@ struct track_t
         , length(0)
         , orth(osg::Vec3())
         , right(osg::Vec3())
-        , rail_coord(0)
+        , rail_coord(0.0f)
 
     {
 

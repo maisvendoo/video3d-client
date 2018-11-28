@@ -9,7 +9,7 @@ DESTDIR = ../../bin
 win32 {
 
     OSG_LIB_DIRECTORY = $$(OSG_BIN_PATH)
-    OSG_INCLUDE_DIRECTORY = $$(OSG_INCLUDE_PATH)
+    OSG_INCLUDE_DIRECTORY = $(OSG_INCLUDE_PATH)
 
 
     CONFIG(debug, debug|release) {
