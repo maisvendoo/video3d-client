@@ -31,7 +31,11 @@ class RoutePath : public osg::Referenced
 public:
 
     /// Default constructor
-    RoutePath() {}
+    RoutePath()
+        : length(0.0f)
+    {
+
+    }
 
     /// Constructor with automatic track loading
     RoutePath(const std::string &track_file_path);
@@ -44,8 +48,11 @@ public:
 
     osg::Vec3 getPosition(float railway_coord, osg::Vec3 &orth);
 
+    float getLength() const;
+
 protected:
 
+    float                   length;
     std::vector<track_t>    track_data;
 
     bool load(const std::string &track_file_path);

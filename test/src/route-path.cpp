@@ -2,11 +2,13 @@
 #include    "string-funcs.h"
 
 #include    <sstream>
+#include    <vector>
 
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
 RoutePath::RoutePath(const std::string &track_file_path)
+    : length(0.0f)
 {
     load(track_file_path);
 }
@@ -44,6 +46,14 @@ osg::Vec3 RoutePath::getPosition(float railway_coord, osg::Vec3 &orth)
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
+float RoutePath::getLength() const
+{
+    return length;
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
 bool RoutePath::load(const std::string &track_file_path)
 {
     std::string ext = osgDB::getLowerCaseFileExtension(track_file_path);
@@ -51,7 +61,7 @@ bool RoutePath::load(const std::string &track_file_path)
     if (ext != "trk")
         return false;
 
-    std::string fileName = osgDB::findDataFile(track_file_path);
+    std::string fileName = osgDB::findDataFile(track_file_path, osgDB::CASE_INSENSITIVE);
 
     if (fileName.empty())
         return false;
@@ -70,6 +80,8 @@ bool RoutePath::load(const std::string &track_file_path)
 bool RoutePath::load(std::istream &stream)
 {
     float rail_coord = 0.0f;
+
+    track_data_t tmp_data;
 
     while (!stream.eof())
     {
@@ -102,7 +114,19 @@ bool RoutePath::load(std::istream &stream)
         track.rail_coord = rail_coord;
         rail_coord += track.length;
 
-        track_data.push_back(track);
+        tmp_data.push_back(track);
+    }
+
+    track_data.push_back(*tmp_data.begin());
+    length += (*tmp_data.begin()).length;
+
+    for (auto it = tmp_data.begin(); (*it).next_uid != -2; ++it)
+    {
+        track_t cur_track = *it;
+        track_t next_track = tmp_data.at(static_cast<size_t>(cur_track.next_uid - 1));
+        track_data[track_data.size() - 1].end_point = next_track.begin_point;
+        track_data.push_back(next_track);
+        length += cur_track.length;
     }
 
     return false;
@@ -137,7 +161,7 @@ track_t RoutePath::findTrack(float railway_coord)
     {
         track = track_data.at(idx);
 
-        if (railway_coord < track.rail_coord)
+        if (railway_coord <= track.rail_coord)
             right_idx = idx;
         else
             left_idx = idx;
