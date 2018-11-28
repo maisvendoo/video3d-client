@@ -32,9 +32,6 @@ int main(int argc, char *argv[])
                          45.0f);
 
     osgViewer::Viewer viewer;
-
-    unsigned int num = viewer.getDatabasePager()->getTargetMaximumNumberOfPageLOD();
-
     viewer.setSceneData(root.get());
     viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
 

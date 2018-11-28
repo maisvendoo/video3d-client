@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Loader for ZDSimulator routes
+//      (c) maisvendoo, 26/11/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Loader for ZDSimulator routes
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 26/11/2018
+ */
+
 #include    "scene-loader.h"
 #include    "model-loader.h"
 #include    "string-funcs.h"
@@ -7,7 +21,6 @@
 #include    <osg/MatrixTransform>
 
 #include    "filesystem.h"
-#include    "texture-loader.h"
 
 //------------------------------------------------------------------------------
 //
@@ -121,7 +134,7 @@ ReadResult SceneLoader::loadObjectRef(std::istream &stream)
         objectRef.insert(std::pair<std::string, object_ref_t>(object.name, object));
     }
 
-    return READ_SUCCESS;
+    return FILE_READ_SUCCESS;
 }
 
 //------------------------------------------------------------------------------
@@ -172,9 +185,15 @@ ReadResult SceneLoader::loadObjectMap(std::istream &stream)
             osg::ref_ptr<osg::MatrixTransform> transform = new osg::MatrixTransform;
 
             osg::Matrixf m1 = osg::Matrixf::translate(object.position);
-            osg::Matrixf m2 = osg::Matrixf::rotate(-object.attitude.z(), osg::Vec3(0, 0, 1));
-            osg::Matrixf m3 = osg::Matrixf::rotate(-object.attitude.x(), osg::Vec3(1, 0, 0));
-            osg::Matrixf m4 = osg::Matrixf::rotate(-object.attitude.y(), osg::Vec3(0, 1, 0));
+            osg::Matrixf m2 = osg::Matrixf::rotate(-object.attitude.z(),
+                                                   osg::Vec3(0, 0, 1));
+
+            osg::Matrixf m3 = osg::Matrixf::rotate(-object.attitude.x(),
+                                                   osg::Vec3(1, 0, 0));
+
+            osg::Matrixf m4 = osg::Matrixf::rotate(-object.attitude.y(),
+                                                   osg::Vec3(0, 1, 0));
+
             transform->setMatrix(m2 * m3 * m4 * m1);
 
             transform->addChild(objectRef[object.name].model_node.get());
@@ -182,5 +201,5 @@ ReadResult SceneLoader::loadObjectMap(std::istream &stream)
         }
     }
 
-    return READ_SUCCESS;
+    return FILE_READ_SUCCESS;
 }

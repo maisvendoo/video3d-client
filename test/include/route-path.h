@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Tracks loader for ZDSimulator routes
+//      (c) maisvendoo, 26/11/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Tracks loader for ZDSimulator routes
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 26/11/2018
+ */
+
 #ifndef     ROUTE_PATH_H
 #define     ROUTE_PATH_H
 
@@ -18,12 +32,16 @@ public:
 
     /// Default constructor
     RoutePath() {}
+
     /// Constructor with automatic track loading
     RoutePath(const std::string &track_file_path);
+
     /// Destructor
     ~RoutePath() {}
 
+    /// Get cartesian position of track point
     osg::Vec3 getPosition(float railway_coord);
+
     osg::Vec3 getPosition(float railway_coord, osg::Vec3 &orth);
 
 protected:

@@ -5,7 +5,6 @@
 #include    <osgDB/FileNameUtils>
 #include    <osgDB/ImageOptions>
 
-#include    "file-funcs.h"
 #include    "texture-loader.h"
 
 //------------------------------------------------------------------------------
@@ -13,6 +12,7 @@
 //------------------------------------------------------------------------------
 void createTexture(const std::string &texture_path, osg::Texture2D *texture)
 {
+    // Check file path
     if (texture_path.empty())
         return;
 
@@ -22,21 +22,19 @@ void createTexture(const std::string &texture_path, osg::Texture2D *texture)
     if (fileName.empty())
         return;
 
+    // Load image from file
     osg::ref_ptr<osg::Image> image = osgDB::readImageFile(fileName);
 
     if (!image.valid())
         return;
 
+    // Vertical flipping of *.bmp image
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 
     if (ext == "bmp")
-        image->flipVertical();    
+        image->flipVertical();        
 
-    /*if (ext == "tga")
-        texture->setInternalFormatMode(osg::Texture2D::USE_S3TC_DXT5_COMPRESSION);
-    else
-        texture->setInternalFormatMode(osg::Texture2D::USE_S3TC_DXT1_COMPRESSION);*/
-
+    // Apply image for texture
     texture->setImage(image.get());
     texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture::REPEAT);
     texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture::REPEAT);    
@@ -48,6 +46,7 @@ void createTexture(const std::string &texture_path, osg::Texture2D *texture)
 //------------------------------------------------------------------------------
 osg::PagedLOD *createLODNode(const model_info_t &model_info)
 {
+    // Check file path
     std::string fileName = osgDB::findDataFile(model_info.filepath,
                                                osgDB::CaseSensitivity::CASE_INSENSITIVE);
 
@@ -72,6 +71,7 @@ osg::PagedLOD *createLODNode(const model_info_t &model_info)
     else
         pagedLOD->getOrCreateStateSet()->setRenderingHint(osg::StateSet::OPAQUE_BIN);
 
+    // Set callback for texture loading
     pagedLOD->setCullCallback(new TextureLoader(model_info.texture_path));
 
     return pagedLOD.release();

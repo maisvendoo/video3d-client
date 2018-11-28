@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Callback functor for visible object's texture loading
+//      (c) maisvendoo, 27/11/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Callback functor for visible object's texture loading
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 27/11/2018
+ */
+
 #ifndef     TEXTURE_LOADER_H
 #define     TEXTURE_LOADER_H
 
@@ -7,10 +21,14 @@
 
 #include    "model-loader.h"
 
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
 class TextureLoader : public osg::NodeCallback
 {
 public:
 
+    /// Constructor
     TextureLoader(const std::string &texture_path)
         : texture_path(texture_path)
         , _is_textured(false)
@@ -18,35 +36,14 @@ public:
 
     }
 
-    virtual void operator() (osg::Node *node, osg::NodeVisitor *nv)
-    {
-        (void) nv;
-
-        if (!_is_textured)
-        {
-            osg::PagedLOD *pagedLOD = static_cast<osg::PagedLOD *>(node);
-
-            std::string description = pagedLOD->getDescription(0);
-
-            if (pagedLOD->isCullingActive())
-            {
-                osg::Texture2D *texture = static_cast<osg::Texture2D *>(pagedLOD->getOrCreateStateSet()->getTextureAttribute(0, osg::StateAttribute::TEXTURE));
-
-                if (texture)
-                {
-                    createTexture(texture_path, texture);
-                }
-
-                _is_textured = true;
-            }
-        }
-
-        traverse(node, nv);
-    }
+    /// Callback method for texture loading
+    virtual void operator() (osg::Node *node, osg::NodeVisitor *nv);
 
 private:
 
+    /// Texture image path
     std::string texture_path;
+    /// Flag for check is object textured
     bool _is_textured;
 };
 
