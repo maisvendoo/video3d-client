@@ -41,30 +41,33 @@ int main(int argc, char *argv[])
     viewer.getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     viewer.setUpViewOnSingleScreen(0);
 
-    osg::ref_ptr<RoutePath> routePath = new RoutePath(fs.getRouteRootDir() + fs.separator() + "route1.trk");
-
-    osg::ref_ptr<osg::Group> track = routePath->getTrackLine(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
-
-    //if (track.valid())
-      //  root->addChild(track.get());
-
+    float dir = 1.0f;
     float x = 400.0f;
+
+    osg::ref_ptr<RoutePath> routePath;
+    float psi = 0.0f;
+
+    if (dir > 0.0f)
+        routePath = new RoutePath(fs.getRouteRootDir() + fs.separator() + "route1.trk");
+    else
+    {
+        routePath = new RoutePath(fs.getRouteRootDir() + fs.separator() + "route2.trk");
+        psi = osg::PIf;
+    }
 
     while (!viewer.done())
     {
-        osg::Vec3 orth;
-        osg::Vec3 pos = routePath->getPosition(x, orth) + osg::Vec3(0.0f, 0.0f, 3.0f);
-
-        orth = orth *= (1 / orth.length());
-
-        float angle = asinf(orth.x());
+        osg::Vec3 attitude;
+        osg::Vec3 pos = routePath->getPosition(x, attitude) + osg::Vec3(0.0f, 0.0f, 3.0f);
 
         osg::Matrix m = osg::Matrix::translate(pos *= -1.0f);
-        m *= osg::Matrix::rotate(-osg::PI / 2, osg::Vec3(1.0f, 0.0f, 0.0f));
-        m *= osg::Matrix::rotate(static_cast<double>(angle), osg::Vec3(0.0f, 1.0f, 0.0f));
+        m *= osg::Matrix::rotate(-osg::PI / 2 + attitude.x(), osg::Vec3(1.0f, 0.0f, 0.0f));
+
+        m *= osg::Matrix::rotate(static_cast<double>(attitude.z() + psi), osg::Vec3(0.0f, 1.0f, 0.0f));
 
         viewer.getCamera()->setViewMatrix(m);
-        x += 1.0f;
+
+        x += 1.0f * dir;
 
         viewer.frame();
     }

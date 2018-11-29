@@ -22,27 +22,25 @@ RoutePath::RoutePath(const std::string &track_file_path)
 //------------------------------------------------------------------------------
 osg::Vec3 RoutePath::getPosition(float railway_coord)
 {
-    track_t track = findTrack(railway_coord);
-
-    float motion = railway_coord - track.rail_coord;
-    osg::Vec3 motion_vec = track.orth *= motion;
-    osg::Vec3 pos = track.begin_point + motion_vec;
-
-    return pos;
+    osg::Vec3 attitude;
+    return getPosition(railway_coord, attitude);
 }
 
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-osg::Vec3 RoutePath::getPosition(float railway_coord, osg::Vec3 &orth)
+osg::Vec3 RoutePath::getPosition(float railway_coord, osg::Vec3 &attitude)
 {
-    track_t track = findTrack(railway_coord);
+    track_t next_track;
+    track_t track = findTrack(railway_coord, next_track);
 
     float motion = railway_coord - track.rail_coord;
     osg::Vec3 motion_vec = track.orth *= motion;
     osg::Vec3 pos = track.begin_point + motion_vec;
 
-    orth = track.orth;
+    float t = motion / track.length;
+    attitude = track.attitude *= (1.0f - t);
+    attitude += next_track.attitude * t;
 
     return pos;
 }
@@ -125,6 +123,21 @@ bool RoutePath::load(const std::string &track_file_path)
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
+float arg(float cos_x, float sin_x)
+{
+    float angle = 0;
+
+    if (sin_x >= 0.0f)
+        angle = acosf(cos_x);
+    else
+        angle = -acosf(cos_x);
+
+    return angle;
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
 bool RoutePath::load(std::istream &stream)
 {
     track_data_t tmp_data;
@@ -152,6 +165,11 @@ bool RoutePath::load(std::istream &stream)
         osg::Vec3 dir_vector = track.end_point - track.begin_point;
         track.length = dir_vector.length();
         track.orth = dir_vector *= (1 / track.length);
+
+        float yaw = arg(track.orth.y(), track.orth.x());
+        float pitch = asinf(track.orth.z());
+
+        track.attitude = osg::Vec3(pitch, 0.0f, yaw);
 
         osg::Vec3 up(0, 0, 1);
         track.right = track.orth ^ up;
@@ -198,7 +216,7 @@ std::string RoutePath::getLine(std::istream &stream) const
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-track_t RoutePath::findTrack(float railway_coord)
+track_t RoutePath::findTrack(float railway_coord, track_t &next_track)
 {
     track_t track;
 
@@ -217,6 +235,11 @@ track_t RoutePath::findTrack(float railway_coord)
 
         idx = (left_idx + right_idx) / 2;
     }
+
+    if (idx < right_idx)
+        next_track = track_data.at(idx + 1);
+    else
+        next_track = track_data.at(idx);
 
     return track_data.at(idx);
 }
