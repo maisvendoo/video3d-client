@@ -46,7 +46,7 @@ public:
     /// Get cartesian position of track point
     osg::Vec3 getPosition(float railway_coord);
 
-    osg::Vec3 getPosition(float railway_coord, osg::Vec3 &orth);
+    osg::Vec3 getPosition(float railway_coord, osg::Vec3 &attitude);
 
     float getLength() const;
 
@@ -63,7 +63,7 @@ protected:
 
     std::string getLine(std::istream &stream) const;
 
-    track_t findTrack(float railway_coord);
+    track_t findTrack(float railway_coord, track_t &next_track);
 };
 
 #endif // ROUTE_PATH_H

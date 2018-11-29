@@ -21,6 +21,7 @@ struct track_t
 
     float       length;
     osg::Vec3   orth;
+    osg::Vec3   attitude;
     osg::Vec3   right;
     float       rail_coord;
 
@@ -34,6 +35,7 @@ struct track_t
         , next_uid(-2)
         , length(0)
         , orth(osg::Vec3())
+        , attitude(osg::Vec3())
         , right(osg::Vec3())
         , rail_coord(0.0f)
 

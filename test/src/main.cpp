@@ -52,19 +52,15 @@ int main(int argc, char *argv[])
 
     while (!viewer.done())
     {
-        osg::Vec3 orth;
-        osg::Vec3 pos = routePath->getPosition(x, orth) + osg::Vec3(0.0f, 0.0f, 3.0f);
-
-        orth = orth *= (1 / orth.length());
-
-        float angle = asinf(orth.x());
+        osg::Vec3 attitude;
+        osg::Vec3 pos = routePath->getPosition(x, attitude) + osg::Vec3(0.0f, 0.0f, 3.0f);
 
         osg::Matrix m = osg::Matrix::translate(pos *= -1.0f);
         m *= osg::Matrix::rotate(-osg::PI / 2, osg::Vec3(1.0f, 0.0f, 0.0f));
-        m *= osg::Matrix::rotate(static_cast<double>(angle), osg::Vec3(0.0f, 1.0f, 0.0f));
+        m *= osg::Matrix::rotate(static_cast<double>(attitude.z()), osg::Vec3(0.0f, 1.0f, 0.0f));
 
         viewer.getCamera()->setViewMatrix(m);
-        x += 0.5f;
+        x += 1.0f;
 
         viewer.frame();
     }
