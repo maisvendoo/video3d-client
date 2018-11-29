@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
         m *= osg::Matrix::rotate(static_cast<double>(angle), osg::Vec3(0.0f, 1.0f, 0.0f));
 
         viewer.getCamera()->setViewMatrix(m);
-        x += 0.5f;
+        x += 1.0f;
 
         viewer.frame();
     }
