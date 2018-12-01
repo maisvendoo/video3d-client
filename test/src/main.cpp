@@ -31,9 +31,8 @@ int main(int argc, char *argv[])
                          180.0f,
                          45.0f);
 
-    osgViewer::Viewer viewer;
+    osgViewer::Viewer viewer;    
 
-    //viewer.getDatabasePager()->setTargetMaximumNumberOfPageLOD(1);
 
     viewer.setSceneData(root.get());
     viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
@@ -41,38 +40,12 @@ int main(int argc, char *argv[])
     viewer.getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     viewer.setUpViewOnSingleScreen(0);
 
-    float dir = 1.0f;
-    float x = 400.0f;
+    osg::ref_ptr<TrainTrajectory> train_traj = new TrainTrajectory(1.0f, 3.0f);
+    viewer.getCamera()->setAllowEventFocus(false);
+    viewer.addEventHandler(new RailwayManipulator(train_traj.get()));
+    viewer.setThreadingModel(osgViewer::Viewer::AutomaticSelection);
 
-    osg::ref_ptr<RoutePath> routePath;
-    float psi = 0.0f;
-
-    if (dir > 0.0f)
-        routePath = new RoutePath(fs.getRouteRootDir() + fs.separator() + "route1.trk");
-    else
-    {
-        routePath = new RoutePath(fs.getRouteRootDir() + fs.separator() + "route2.trk");
-        psi = osg::PIf;
-    }
-
-    while (!viewer.done())
-    {
-        osg::Vec3 attitude;
-        osg::Vec3 pos = routePath->getPosition(x, attitude) + osg::Vec3(0.0f, 0.0f, 3.0f);
-
-        osg::Matrix m = osg::Matrix::translate(pos *= -1.0f);
-        m *= osg::Matrix::rotate(-osg::PI / 2 + attitude.x(), osg::Vec3(1.0f, 0.0f, 0.0f));
-
-        m *= osg::Matrix::rotate(static_cast<double>(attitude.z() + psi), osg::Vec3(0.0f, 1.0f, 0.0f));
-
-        viewer.getCamera()->setViewMatrix(m);
-
-        x += 1.0f * dir;
-
-        viewer.frame();
-    }
-
-    return 0;
+    return viewer.run();
 }
 
 

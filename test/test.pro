@@ -20,6 +20,8 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgViewerd
         LIBS += -L$$OSG_LIB_DIRECTORY -losgDBd
         LIBS += -L$$OSG_LIB_DIRECTORY -lOpenThreadsd
+        LIBS += -L$$OSG_LIB_DIRECTORY -losgGAd
+        LIBS += -L$$OSG_LIB_DIRECTORY -losgUtild
 
     } else {
 
@@ -27,6 +29,8 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgViewer
         LIBS += -L$$OSG_LIB_DIRECTORY -losgDB
         LIBS += -L$$OSG_LIB_DIRECTORY -lOpenThreads
+        LIBS += -L$$OSG_LIB_DIRECTORY -losgGA
+        LIBS += -L$$OSG_LIB_DIRECTORY -losgUtil
 
     }
 
@@ -43,6 +47,8 @@ unix {
         LIBS += -losgViewerd
         LIBS += -losgDBd
         LIBS += -lOpenThreadsd
+        LIBS += -losgGAd
+        LIBS += -losgUtild
 
     } else {
 
@@ -50,6 +56,8 @@ unix {
         LIBS +=  -losgViewer
         LIBS +=  -losgDB
         LIBS +=  -lOpenThreads
+        LIBS +=  -losgGA
+        LIBS +=  -losgUtil
 
     }
 }
