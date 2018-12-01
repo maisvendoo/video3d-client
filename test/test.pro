@@ -34,6 +34,8 @@ win32 {
 
     }
 
+    LIBS += -lopengl32 -lglu32
+
     INCLUDEPATH += $$OSG_INCLUDE_DIRECTORY
 }
 
@@ -48,7 +50,7 @@ unix {
         LIBS += -losgDBd
         LIBS += -lOpenThreadsd
         LIBS += -losgGAd
-        LIBS += -losgUtild
+        LIBS += -losgUtild        
 
     } else {
 
@@ -60,7 +62,11 @@ unix {
         LIBS +=  -losgUtil
 
     }
+
+    LIBS += -lGL
 }
+
+
 
 INCLUDEPATH += ./include
 

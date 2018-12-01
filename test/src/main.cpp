@@ -45,6 +45,17 @@ int main(int argc, char *argv[])
     viewer.addEventHandler(new RailwayManipulator(train_traj.get()));
     viewer.setThreadingModel(osgViewer::Viewer::AutomaticSelection);
 
+    osg::DisplaySettings::instance()->setMinimumNumAccumBits(8, 8, 8, 8);
+    viewer.realize();
+
+    osgViewer::Viewer::Windows windows;
+    viewer.getWindows(windows);
+
+    for (auto it = windows.begin(); it != windows.end(); ++it)
+    {
+        (*it)->add(new MotionBlurOperation(0.1));
+    }
+
     return viewer.run();
 }
 

@@ -21,4 +21,6 @@
 
 #include    "camera.h"
 
+#include    "motion-blur.h"
+
 #endif // MAIN_H

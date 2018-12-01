@@ -12,7 +12,7 @@ struct traj_element_t
 
     traj_element_t()
         : coord_begin(1000.0f)
-        , coord_end(251000.0f)
+        , coord_end(250100.0f)
         , delta_time(3600.0f)
     {
 
