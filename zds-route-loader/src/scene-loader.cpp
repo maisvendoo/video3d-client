@@ -38,9 +38,7 @@ SceneLoader::SceneLoader() : RouteLoader()
 void SceneLoader::load(std::string routeDir)
 {
     FileSystem &fs = FileSystem::getInstance();
-    this->routeDir = fs.getNativePath(routeDir);
-
-    root = new osg::Group;
+    this->routeDir = fs.getNativePath(routeDir);    
 
     loadDataFile(this->routeDir + fs.separator() + "objects.ref");
     loadDataFile(this->routeDir + fs.separator() + "route1.map");

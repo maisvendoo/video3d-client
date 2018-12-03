@@ -7,13 +7,20 @@ int main(int argc, char *argv[])
 {
     osg::ArgumentParser args(&argc, argv);
     std::string routeDir;
-    args.read("--route", routeDir);
+    args.read("--route", routeDir);    
 
     FileSystem &fs = FileSystem::getInstance();
-    fs.setRouteRootDir(routeDir);
+    fs.setRouteRootDir(routeDir);    
 
-    osg::ref_ptr<RouteLoader> scnLoader = loadRouteLoader("../plugins", "zds-route-loader");
-    scnLoader->load(routeDir);
+    osg::ref_ptr<RouteLoader> scnLoader = loadRouteLoader("../plugins", "zds-route-loader");    
+
+    if (!scnLoader.valid())
+    {
+        std::cout << "Route loder is't created" << std::endl;
+        return -1;
+    }
+
+    scnLoader->load(routeDir);        
 
     osg::ref_ptr<osg::Group> root = scnLoader->getRoot();
 

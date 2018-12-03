@@ -5,6 +5,14 @@
 #include    <osg/Group>
 #include    <osgGA/GUIEventHandler>
 
+#include    "import-export.h"
+
+#ifdef ROUTE_LOADER_LIB
+    #define ROUTE_LOADER_EXPORT DECL_EXPORT
+#else
+    #define ROUTE_LOADER_EXPORT DECL_IMPORT
+#endif
+
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
@@ -18,7 +26,7 @@ enum ReadResult
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-class OSG_EXPORT RouteLoader : public osg::Referenced
+class ROUTE_LOADER_EXPORT RouteLoader : public osg::Referenced
 {
 public:
 
@@ -58,7 +66,7 @@ typedef RouteLoader* (*GetRouteLoader)();
 //
 //------------------------------------------------------------------------------
 #define GET_ROUTE_LOADER(ClassName) \
-    extern "C" OSG_EXPORT RouteLoader *getRouteLoader() \
+    extern "C" DECL_EXPORT RouteLoader *getRouteLoader() \
     {\
         return new (ClassName)(); \
     }
@@ -66,6 +74,6 @@ typedef RouteLoader* (*GetRouteLoader)();
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-extern "C" OSG_EXPORT RouteLoader *loadRouteLoader(const std::string &path, const std::string &name);
+extern "C" DECL_EXPORT RouteLoader *loadRouteLoader(const std::string &path, const std::string &name);
 
 #endif

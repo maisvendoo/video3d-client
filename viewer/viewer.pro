@@ -73,7 +73,7 @@ unix {
     LIBS += -lGL
 }
 
-
+INCLUDEPATH += ../include
 INCLUDEPATH += ../route-loader/include
 INCLUDEPATH += ./include
 
