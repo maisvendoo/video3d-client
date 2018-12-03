@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Cross-platform dynamic library loader
+//      (c) maisvendoo, 03/12/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Cross-platform dynamic library loader
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 03/12/2018
+ */
+
 #include    "library.h"
 #include    "filesystem.h"
 

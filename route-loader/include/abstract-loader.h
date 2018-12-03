@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Abstract loder or railway route
+//      (c) maisvendoo, 03/12/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Abstract loder or railway route
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 03/12/2018
+ */
+
 #ifndef		ABSTRACT_LOADER_H
 #define		ABSTRACT_LOADER_H
 
@@ -30,7 +44,7 @@ class ROUTE_LOADER_EXPORT RouteLoader : public osg::Referenced
 {
 public:
 
-    /// Cjnstructor
+    /// Constructor
     RouteLoader();
 
     /// Load route
@@ -40,7 +54,8 @@ public:
     virtual osg::Group *getRoot();
 
     /// Get camera events handler
-    virtual osgGA::GUIEventHandler *getCameraEventHandler(int direction, float camera_height) = 0;
+    virtual osgGA::GUIEventHandler *getCameraEventHandler(int direction,
+                                                          float camera_height) = 0;
 
 protected:    
 

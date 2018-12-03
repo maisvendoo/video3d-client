@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Abstract loder or railway route
+//      (c) maisvendoo, 03/12/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Abstract loder or railway route
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 03/12/2018
+ */
+
 #include    "abstract-loader.h"
 
 #include    "library.h"
