@@ -24,6 +24,7 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtild
 
         LIBS += -L../../lib -lroute-loader_d
+        LIBS += -L../../lib -llibrary_d
 
     } else {
 
@@ -35,6 +36,7 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtil
 
         LIBS += -L../../lib -lroute-loader
+        LIBS += -L../../lib -llibrary
 
     }
 
@@ -57,6 +59,7 @@ unix {
         LIBS += -losgUtild
 
         LIBS += -L../../lib -lroute-loader_d
+        LIBS += -L../../lib -llibrary_d
 
     } else {
 
@@ -68,6 +71,7 @@ unix {
         LIBS +=  -losgUtil
 
         LIBS += -L../../lib -lroute-loader
+        LIBS += -L../../lib -llibrary
     }
 
     LIBS += -lGL
@@ -75,6 +79,7 @@ unix {
 
 INCLUDEPATH += ../include
 INCLUDEPATH += ../route-loader/include
+INCLUDEPATH += ../library/include
 INCLUDEPATH += ./include
 
 HEADERS += $$files(./include/*.h)

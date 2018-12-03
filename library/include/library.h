@@ -8,8 +8,18 @@
 #endif
 
 #include        <string>
+#include        "import-export.h"
 
-class Library
+#ifdef LIBRARY_LIB
+    #define LIBRARY_EXPORT DECL_EXPORT
+#else
+    #define LIBRARY_EXPORT DECL_IMPORT
+#endif
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+class LIBRARY_EXPORT Library
 {
 public:
 

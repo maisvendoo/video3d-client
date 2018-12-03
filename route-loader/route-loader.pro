@@ -25,6 +25,8 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgGAd
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtild
 
+        LIBS += -L../../lib -llibrary_d
+
     } else {
 
         LIBS += -L$$OSG_LIB_DIRECTORY -losg
@@ -33,6 +35,8 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -lOpenThreads
         LIBS += -L$$OSG_LIB_DIRECTORY -losgGA
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtil
+
+        LIBS += -L../../lib -llibrary
 
     }    
 
@@ -52,6 +56,8 @@ unix {
         LIBS += -losgGAd
         LIBS += -losgUtild
 
+        LIBS += -L../../lib -llibrary_d
+
     } else {
 
         LIBS +=  -losg
@@ -61,11 +67,14 @@ unix {
         LIBS +=  -losgGA
         LIBS +=  -losgUtil
 
+        LIBS += -L../../lib -llibrary
+
     }
 }
 
 
 INCLUDEPATH += ../include
+INCLUDEPATH += ../library/include
 INCLUDEPATH += ./include
 
 HEADERS += $$files(./include/*.h)
