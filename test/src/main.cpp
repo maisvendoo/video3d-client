@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     initEnvironmentLight(root.get(),
                          osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f),
                          1.0f,
-                         180.0f,
+                         0.0f,
                          45.0f);
 
     osgViewer::Viewer viewer;    

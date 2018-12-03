@@ -9,7 +9,6 @@
 #include    <osgDB/DatabasePager>
 #include    <osgViewer/Viewer>
 #include    <osgDB/ReadFile>
-#include    <osgUtil/Optimizer>
 
 #include    "model-loader.h"
 #include    "route-path.h"
