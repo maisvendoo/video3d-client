@@ -20,8 +20,9 @@ public:
     MotionBlurOperation(double persistence)
         : osg::Referenced(true)
         , osg::Operation("MotionBlur", true)
-        , _cleared(false)
+        , _t0(0.0)
         , _persistence(persistence)
+        , _cleared(false)
     {
 
     }
@@ -30,9 +31,9 @@ public:
 
 protected:
 
-    bool _cleared;
     double _persistence;
     double _t0;
+    bool _cleared;
 };
 
 #endif // MOTION_BLUR_H

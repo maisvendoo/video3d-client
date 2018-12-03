@@ -25,7 +25,7 @@
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-SceneLoader::SceneLoader(std::string routeDir)    
+SceneLoader::SceneLoader(std::string routeDir) : AbstractLoader (routeDir)
 {
     FileSystem &fs = FileSystem::getInstance();
     this->routeDir = fs.getNativePath(routeDir);
@@ -34,17 +34,6 @@ SceneLoader::SceneLoader(std::string routeDir)
 
     loadDataFile(this->routeDir + fs.separator() + "objects.ref");
     loadDataFile(this->routeDir + fs.separator() + "route1.map");
-}
-
-//------------------------------------------------------------------------------
-//
-//------------------------------------------------------------------------------
-osg::Group *SceneLoader::getRoot()
-{
-    if (root.valid())
-        return root.release();
-    else
-        return nullptr;
 }
 
 //------------------------------------------------------------------------------
