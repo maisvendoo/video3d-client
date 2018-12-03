@@ -30,15 +30,16 @@
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-class SceneLoader : public AbstractLoader
+class SceneLoader : public RouteLoader
 {
 public:
 
     /// Constructor for load route
-    SceneLoader(std::string routeDir);
+    SceneLoader();
 
-    /// Destructor
-    ~SceneLoader() {}    
+    void load(std::string routeDir);
+
+    osgGA::GUIEventHandler *getCameraEventHandler(int direction, float camera_height);
 
 protected:
 
@@ -46,7 +47,10 @@ protected:
     std::map<std::string, object_ref_t> objectRef;
 
     /// List objects from file route1.map
-    std::vector<object_map_t> objectMap;    
+    std::vector<object_map_t> objectMap;
+
+    /// Destructor
+    ~SceneLoader() {}
 
     /// Load data from route files
     ReadResult loadDataFile(const std::string &filepath);
@@ -54,7 +58,7 @@ protected:
     /// Load data from *.ref file
     ReadResult loadObjectRef(std::istream &stream);
 
-    /// Load data from *map file
+    /// Load data from *.map file
     ReadResult loadObjectMap(std::istream &stream);
 };
 

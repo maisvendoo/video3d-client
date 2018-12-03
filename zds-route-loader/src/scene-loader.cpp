@@ -22,10 +22,20 @@
 
 #include    "filesystem.h"
 
+#include    "camera.h"
+
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-SceneLoader::SceneLoader(std::string routeDir) : AbstractLoader (routeDir)
+SceneLoader::SceneLoader() : RouteLoader()
+{
+
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+void SceneLoader::load(std::string routeDir)
 {
     FileSystem &fs = FileSystem::getInstance();
     this->routeDir = fs.getNativePath(routeDir);
@@ -34,6 +44,16 @@ SceneLoader::SceneLoader(std::string routeDir) : AbstractLoader (routeDir)
 
     loadDataFile(this->routeDir + fs.separator() + "objects.ref");
     loadDataFile(this->routeDir + fs.separator() + "route1.map");
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+osgGA::GUIEventHandler *SceneLoader::getCameraEventHandler(int direction, float camera_height)
+{
+    osg::ref_ptr<TrainTrajectory> train_traj = new TrainTrajectory(routeDir, direction, camera_height);
+
+    return new RailwayManipulator(train_traj.get());
 }
 
 //------------------------------------------------------------------------------
@@ -192,3 +212,5 @@ ReadResult SceneLoader::loadObjectMap(std::istream &stream)
 
     return FILE_READ_SUCCESS;
 }
+
+GET_ROUTE_LOADER(SceneLoader)

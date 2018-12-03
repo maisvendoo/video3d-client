@@ -4,15 +4,15 @@
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-TrainTrajectory::TrainTrajectory(int direction,
+TrainTrajectory::TrainTrajectory(std::string routeDir,
+                                 int direction,
                                  float height)
     : direction(direction)
     , height(height)
     , init_yaw(0.0f)
 
 {
-    FileSystem &fs = FileSystem::getInstance();
-    routeDir = fs.getRouteRootDir();
+    FileSystem &fs = FileSystem::getInstance();    
     std::string track_name = routeDir + fs.separator() +  "route";
 
     if (direction > 0)

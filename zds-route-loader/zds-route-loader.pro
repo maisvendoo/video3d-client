@@ -1,10 +1,13 @@
-TEMPLATE = app
+TEMPLATE = lib
 
 CONFIG -= qt
 
-TARGET = test
+CONFIG += plugin
+CONFIG += no_plugin_name_prefix
 
-DESTDIR = ../../bin
+TARGET = zds-route-loader
+
+DESTDIR = ../../plugins
 
 win32 {
 
@@ -14,14 +17,14 @@ win32 {
 
     CONFIG(debug, debug|release) {
 
-        TARGET = $$join(TARGET,,,_d)
-
         LIBS += -L$$OSG_LIB_DIRECTORY -losgd
         LIBS += -L$$OSG_LIB_DIRECTORY -losgViewerd
         LIBS += -L$$OSG_LIB_DIRECTORY -losgDBd
         LIBS += -L$$OSG_LIB_DIRECTORY -lOpenThreadsd
         LIBS += -L$$OSG_LIB_DIRECTORY -losgGAd
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtild
+
+        LIBS += -L../../lib -lroute-loader_d
 
     } else {
 
@@ -32,9 +35,9 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgGA
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtil
 
-    }
+        LIBS += -L../../lib -lroute-loader
 
-    LIBS += -lopengl32 -lglu32
+    }
 
     INCLUDEPATH += $$OSG_INCLUDE_DIRECTORY
 }
@@ -43,14 +46,14 @@ unix {
 
     CONFIG(debug, debug|release) {
 
-        TARGET = $$join(TARGET,,,_d)
-
         LIBS += -losgd
         LIBS += -losgViewerd
         LIBS += -losgDBd
         LIBS += -lOpenThreadsd
         LIBS += -losgGAd
-        LIBS += -losgUtild        
+        LIBS += -losgUtild
+
+        LIBS += -L../../lib -lroute-loader_d
 
     } else {
 
@@ -61,13 +64,12 @@ unix {
         LIBS +=  -losgGA
         LIBS +=  -losgUtil
 
+        LIBS += -L../../lib -lroute-loader
     }
-
-    LIBS += -lGL
 }
 
-
-
+INCLUDEPATH += ../include
+INCLUDEPATH += ../route-loader/include
 INCLUDEPATH += ./include
 
 HEADERS += $$files(./include/*.h)

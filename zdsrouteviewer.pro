@@ -2,5 +2,8 @@ TEMPLATE = subdirs
 
 GONFIG += ordered
 
-SUBDIRS += ./PluginDMD
-SUBDIRS += ./test
+SUBDIRS += ./osgdb_dmd
+SUBDIRS += ./route-loader
+SUBDIRS += ./zds-route-loader
+SUBDIRS += ./viewer
+

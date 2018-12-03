@@ -22,7 +22,8 @@ class TrainTrajectory : public osg::Referenced
 {
 public:
 
-    TrainTrajectory(int direction,
+    TrainTrajectory(std::string routeDir,
+                    int direction,
                     float height);
 
     void update(const traj_element_t &traj_elem, const float &delta_time);

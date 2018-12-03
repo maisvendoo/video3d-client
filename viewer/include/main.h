@@ -10,16 +10,13 @@
 #include    <osgViewer/Viewer>
 #include    <osgDB/ReadFile>
 
-#include    "model-loader.h"
-#include    "route-path.h"
-
-#include    "scene-loader.h"
+#include    "abstract-loader.h"
 #include    "lighting.h"
 
 #include    "filesystem.h"
 
-#include    "camera.h"
-
 #include    "motion-blur.h"
+
+#include    "library.h"
 
 #endif // MAIN_H

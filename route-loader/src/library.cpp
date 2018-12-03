@@ -1,33 +1,64 @@
+#include    "library.h"
 #include    "filesystem.h"
 
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-void FileSystem::setRouteRootDir(const std::string &path)
+Library::Library(const std::string &path, const std::string &name)
+    : _path("")
+    , _lib_ptr(nullptr)
 {
-    routeRootDir = getNativePath(path);
+    FileSystem &fs = FileSystem::getInstance();
+
+    _path = fs.getNativePath(path) + fs.separator() + name;
+
+#if __unix__
+    _path += ".so";
+#else
+    _path += ".dll";
+#endif
 }
 
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-std::string FileSystem::getRouteRootDir() const
+Library::~Library()
 {
-    return routeRootDir;
+
 }
 
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-std::string FileSystem::getNativePath(const std::string &path) const
+bool Library::load()
 {
-    return osgDB::convertFileNameToNativeStyle(path);
+#if __unix__
+
+    if (_path.empty())
+        return false;
+
+    _lib_ptr = dlopen(_path.c_str(), RTLD_LAZY);
+
+    if (_lib_ptr != nullptr)
+        return true;
+
+    return false;
+
+#else
+
+#endif
 }
 
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-char FileSystem::separator() const
+void *Library::resolve(std::string func_name)
 {
-    return osgDB::getNativePathSeparator();
+#if __unix__
+
+    return dlsym(_lib_ptr, func_name.c_str());
+
+#else
+
+#endif
 }

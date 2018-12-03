@@ -12,9 +12,10 @@ int main(int argc, char *argv[])
     FileSystem &fs = FileSystem::getInstance();
     fs.setRouteRootDir(routeDir);
 
-    SceneLoader scnLoader(routeDir);    
+    osg::ref_ptr<RouteLoader> scnLoader = loadRouteLoader("../plugins", "zds-route-loader");
+    scnLoader->load(routeDir);
 
-    osg::ref_ptr<osg::Group> root = scnLoader.getRoot();
+    osg::ref_ptr<osg::Group> root = scnLoader->getRoot();
 
     root->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     root->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
@@ -40,9 +41,8 @@ int main(int argc, char *argv[])
     viewer.getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     viewer.setUpViewOnSingleScreen(0);
 
-    osg::ref_ptr<TrainTrajectory> train_traj = new TrainTrajectory(1.0f, 3.0f);
     viewer.getCamera()->setAllowEventFocus(false);
-    viewer.addEventHandler(new RailwayManipulator(train_traj.get()));
+    viewer.addEventHandler(scnLoader->getCameraEventHandler(1, 3.0f));
     viewer.setThreadingModel(osgViewer::Viewer::AutomaticSelection);
 
     osg::DisplaySettings::instance()->setMinimumNumAccumBits(8, 8, 8, 8);
