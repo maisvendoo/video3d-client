@@ -26,7 +26,7 @@ public:
 
         std::string workDir = osgDB::getCurrentWorkingDirectory();
         std::string tmp = instance.getLevelUpDirectory(workDir, 1);
-        instance.setRouteRootDir(tmp + instance.separator() + "routes");
+        instance.setRouteRootDir(tmp + "routes");
 
         return instance;
     }    

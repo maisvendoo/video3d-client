@@ -89,4 +89,3 @@ INCLUDEPATH += ./include
 
 HEADERS += $$files(./include/*.h)
 SOURCES += $$files(./src/*.cpp)
-

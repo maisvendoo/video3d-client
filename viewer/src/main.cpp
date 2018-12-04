@@ -5,10 +5,14 @@
 //------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
+    RouteViewer testViewer(argc, argv);
+
+    // Command line parsing
     osg::ArgumentParser args(&argc, argv);
     std::string routeDir;
     args.read("--route", routeDir);                
 
+    // Route loading
     osg::ref_ptr<RouteLoader> scnLoader = loadRouteLoader("../plugins", "zds-route-loader");    
 
     if (!scnLoader.valid())
@@ -21,6 +25,7 @@ int main(int argc, char *argv[])
 
     osg::ref_ptr<osg::Group> root = scnLoader->getRoot();
 
+    // Common graphics settings
     root->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     root->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
     root->getOrCreateStateSet()->setMode(GL_ALPHA, osg::StateAttribute::ON);
@@ -30,14 +35,14 @@ int main(int argc, char *argv[])
     cull->setMode(osg::CullFace::BACK);
     root->getOrCreateStateSet()->setAttributeAndModes(cull, osg::StateAttribute::ON);
 
+    // Set lighting
     initEnvironmentLight(root.get(),
                          osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f),
                          1.0f,
                          0.0f,
                          45.0f);
 
-    osgViewer::Viewer viewer;    
-
+    osgViewer::Viewer viewer;
 
     viewer.setSceneData(root.get());
     viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));

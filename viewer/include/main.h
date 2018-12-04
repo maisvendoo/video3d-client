@@ -19,4 +19,6 @@
 
 #include    "library.h"
 
+#include    "viewer.h"
+
 #endif // MAIN_H
