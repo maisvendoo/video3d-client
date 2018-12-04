@@ -25,6 +25,7 @@ win32 {
 
         LIBS += -L../../lib -lroute-loader_d
         LIBS += -L../../lib -llibrary_d
+        LIBS += -L../../lib -lfilesystem_d
 
     } else {
 
@@ -37,6 +38,7 @@ win32 {
 
         LIBS += -L../../lib -lroute-loader
         LIBS += -L../../lib -llibrary
+        LIBS += -L../../lib -lfilesystem
 
     }
 
@@ -60,6 +62,7 @@ unix {
 
         LIBS += -L../../lib -lroute-loader_d
         LIBS += -L../../lib -llibrary_d
+        LIBS += -L../../lib -lfilesystem_d
 
     } else {
 
@@ -72,6 +75,7 @@ unix {
 
         LIBS += -L../../lib -lroute-loader
         LIBS += -L../../lib -llibrary
+        LIBS += -L../../lib -lfilesystem
     }
 
     LIBS += -lGL

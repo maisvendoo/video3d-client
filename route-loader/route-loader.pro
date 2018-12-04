@@ -26,6 +26,7 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtild
 
         LIBS += -L../../lib -llibrary_d
+        LIBS += -L../../lib -lfilesystem_d
 
     } else {
 
@@ -37,6 +38,7 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtil
 
         LIBS += -L../../lib -llibrary
+        LIBS += -L../../lib -lfilesystem
 
     }    
 
@@ -57,6 +59,7 @@ unix {
         LIBS += -losgUtild
 
         LIBS += -L../../lib -llibrary_d
+        LIBS += -L../../lib -lfilesystem_d
 
     } else {
 
@@ -68,12 +71,14 @@ unix {
         LIBS +=  -losgUtil
 
         LIBS += -L../../lib -llibrary
+        LIBS += -L../../lib -lfilesystem
 
     }
 }
 
 
 INCLUDEPATH += ../include
+INCLUDEPATH += ../filesystem/include
 INCLUDEPATH += ../library/include
 INCLUDEPATH += ./include
 

@@ -4,10 +4,18 @@
 #include    <osgDB/FileUtils>
 #include    <osgDB/FileNameUtils>
 
+#include    "import-export.h"
+
+#ifdef FILESYSTEM_LIB
+    #define FILESYSTEM_EXPORT   DECL_EXPORT
+#else
+    #define FILESYSTEM_EXPORT   DECL_IMPORT
+#endif
+
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-class FileSystem
+class FILESYSTEM_EXPORT FileSystem
 {
 public:
 
@@ -19,28 +27,15 @@ public:
     }
 
     /// Set route direcory path in paltform native format
-    void setRouteRootDir(const std::string &path)
-    {
-        routeRootDir = getNativePath(path);
-    }
+    void setRouteRootDir(const std::string &path);
+
+    std::string getNativePath(const std::string &path);
 
     /// Get route directory path
-    std::string getRouteRootDir() const
-    {
-        return routeRootDir;
-    }
-
-    /// Convert file path to native format
-    std::string getNativePath(const std::string &path) const
-    {
-        return osgDB::convertFileNameToNativeStyle(path);
-    }
+    std::string getRouteRootDir() const;    
 
     /// Get native path separator
-    char separator() const
-    {
-        return osgDB::getNativePathSeparator();
-    }
+    char separator() const;
 
 private:
 

@@ -25,6 +25,7 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtild
 
         LIBS += -L../../lib -lroute-loader_d
+        LIBS += -L../../lib -lfilesystem_d
 
     } else {
 
@@ -36,6 +37,7 @@ win32 {
         LIBS += -L$$OSG_LIB_DIRECTORY -losgUtil
 
         LIBS += -L../../lib -lroute-loader
+        LIBS += -L../../lib -lfilesystem
 
     }
 
@@ -54,6 +56,7 @@ unix {
         LIBS += -losgUtild
 
         LIBS += -L../../lib -lroute-loader_d
+        LIBS += -L../../lib -lfilesystem_d
 
     } else {
 
@@ -65,10 +68,12 @@ unix {
         LIBS +=  -losgUtil
 
         LIBS += -L../../lib -lroute-loader
+        LIBS += -L../../lib -lfilesystem
     }
 }
 
 INCLUDEPATH += ../include
+INCLUDEPATH += ../filesystem/include
 INCLUDEPATH += ../route-loader/include
 INCLUDEPATH += ./include
 
