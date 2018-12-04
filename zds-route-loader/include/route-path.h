@@ -36,23 +36,32 @@ public:
     /// Get cartesian position of track point
     osg::Vec3 getPosition(float railway_coord);
 
+    /// Get cartesian position and camera's attitude
     osg::Vec3 getPosition(float railway_coord, osg::Vec3 &attitude);
 
+    /// Get full length of tracks
     float getLength() const;
 
+    /// Get visual track line node (for debug)
     osg::Group *getTrackLine(const osg::Vec4 &color);
 
 protected:
 
+    /// Tracks full length
     float                   length;
+    /// Tracks data
     std::vector<track_t>    track_data;
 
+    /// Load tracks from file *.trk
     bool load(const std::string &track_file_path);
 
+    /// Load tracks from input stream
     bool load(std::istream &stream);
 
+    /// Get line from input stream
     std::string getLine(std::istream &stream) const;
 
+    /// Find track for some railway coordinate
     track_t findTrack(float railway_coord, track_t &next_track);
 };
 

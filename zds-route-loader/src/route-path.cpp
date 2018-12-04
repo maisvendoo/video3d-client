@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Tracks loader for ZDSimulator routes
+//      (c) maisvendoo, 26/11/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Tracks loader for ZDSimulator routes
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 26/11/2018
+ */
+
 #include    "route-path.h"
 #include    "string-funcs.h"
 
@@ -77,7 +91,9 @@ osg::Group *RoutePath::getTrackLine(const osg::Vec4 &color)
         vertices->push_back(track.end_point + h);
         geom->setVertexArray(vertices.get());
 
-        osg::ref_ptr<osg::DrawArrays> da = new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, static_cast<int>(vertices->size()));
+        osg::ref_ptr<osg::DrawArrays> da = new osg::DrawArrays(osg::PrimitiveSet::LINES,
+                                                               0,
+                                                               static_cast<int>(vertices->size()));
         geom->addPrimitiveSet(da.get());
 
         osg::ref_ptr<osg::Geode> geode = new osg::Geode;

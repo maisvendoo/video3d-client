@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Camera's events hadnler (to process camera motion)
+//      (c) maisvendoo, 01/12/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Camera's events hadnler (to process camera motion)
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 01/12/2018
+ */
+
 #include    "camera.h"
 
 //------------------------------------------------------------------------------
@@ -27,12 +41,15 @@ bool RailwayManipulator::handle(const osgGA::GUIEventAdapter &ea,
         if (!viewer)
             break;
 
+        // Current time label
         double time = viewer->getFrameStamp()->getReferenceTime();
+        // Calculationg of frame drawing time
         double delta_time = time - _startTime;
         ref_time += delta_time;
         _startTime = time;
 
-        moveCamera(traj_element, viewer);
+        // Move camera to new position
+        moveCamera(ref_time, traj_element, viewer);
 
         break;
     }
@@ -54,14 +71,18 @@ bool RailwayManipulator::handle(const osgGA::GUIEventAdapter &ea,
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-void RailwayManipulator::moveCamera(const traj_element_t &traj_element,
+void RailwayManipulator::moveCamera(double ref_time,
+                                    const traj_element_t &traj_element,
                                     osgViewer::Viewer *viewer)
 {
+    // Update train position on trajectory
     train_traj->update(traj_element, static_cast<float>(ref_time));
 
+    // Get current camera position and attitude
     osg::Vec3 position = train_traj->getPosition();
     osg::Vec3 attitude = train_traj->getAttitude();
 
+    // View matrix calculation
     matrix = osg::Matrix::translate(position *= -1.0f);
     matrix *= osg::Matrix::rotate(static_cast<double>(attitude.x()), osg::Vec3(1.0f, 0.0f, 0.0f));
     matrix *= osg::Matrix::rotate(static_cast<double>(attitude.z()), osg::Vec3(0.0f, 1.0f, 0.0f));

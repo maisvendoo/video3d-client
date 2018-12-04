@@ -1,3 +1,16 @@
+//------------------------------------------------------------------------------
+//
+//      Trajectory processor for camera motion
+//      (c) maisvendoo
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Trajectory processor for camera motion
+ * \copyright maisvendoo
+ * \author maisvendoo
+ */
+
 #include    "trajectory.h"
 #include    "filesystem.h"
 

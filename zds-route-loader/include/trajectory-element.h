@@ -1,6 +1,23 @@
+//------------------------------------------------------------------------------
+//
+//      Current trajectory element for lineaer approximate of camera motion
+//      (c) maisvendoo
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Current trajectory element for lineaer approximate of camera motion
+ * \copyright maisvendoo
+ * \author maisvendoo
+ */
+
 #ifndef     TRAJECTORY_ELEMENT_H
 #define     TRAJECTORY_ELEMENT_H
 
+/*!
+ * \struct
+ * \brief Trajectory element
+ */
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------

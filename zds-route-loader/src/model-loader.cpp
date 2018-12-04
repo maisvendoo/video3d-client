@@ -1,3 +1,16 @@
+//------------------------------------------------------------------------------
+//
+//      Prepare of *.dmd model loading
+//      (c) maisvendoo
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Prepare of *.dmd model loading
+ * \copyright maisvendoo
+ * \author maisvendoo
+ */
+
 #include    "model-loader.h"
 
 #include    <osg/Texture2D>
