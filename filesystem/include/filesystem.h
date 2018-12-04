@@ -27,6 +27,7 @@ public:
         std::string workDir = osgDB::getCurrentWorkingDirectory();
         std::string tmp = instance.getLevelUpDirectory(workDir, 1);
         instance.setRouteRootDir(tmp + "routes");
+        instance.setConfigDir(tmp + "cfg");
 
         return instance;
     }    
@@ -36,12 +37,15 @@ public:
     /// Get route directory path
     std::string getRouteRootDir() const;    
 
+    std::string getConfigDir() const;
+
     /// Get native path separator
     char separator() const;
 
 private:
 
     std::string routeRootDir;
+    std::string configDir;
 
     FileSystem() {}
     FileSystem(const FileSystem &) = delete;
@@ -49,6 +53,9 @@ private:
 
     /// Set route direcory path in paltform native format
     void setRouteRootDir(const std::string &path);
+
+    /// Set config directory path
+    void setConfigDir(const std::string &path);
 
     /// Get directory by num_levels levels up
     std::string getLevelUpDirectory(std::string path, int num_levels);

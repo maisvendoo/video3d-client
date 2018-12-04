@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<Viewer>
+		<Width>1360</Width>
+		<Height>768</Height>
+		<FullScreen>1</FullScreen>
+		<HostAddress>127.0.0.1</HostAddress>
+		<Port>1992</Port>
+		<LocalMode>0</LocalMode>
+	</Viewer>
+</Config>

@@ -17,7 +17,8 @@
 
 #include    <osgViewer/Viewer>
 
-#include    "cmd-line.h"
+#include    "settings.h"
+#include    "command-line-parser.h"
 
 //------------------------------------------------------------------------------
 //
@@ -30,11 +31,19 @@ public:
 
     virtual ~RouteViewer();
 
+    bool isReady() const;
+
 protected:
 
-    bool init(int argc, char *argv[]);
+    bool        is_ready;
+    settings_t  settings;
 
-    cmd_line_t parseCommandLine(int argc, char *argv[]) const;
+    bool init(int argc, char *argv[]);   
+
+    settings_t loadSettings(const std::string &cfg_path) const;
+
+    void overrideSettingsByCommandLine(const cmd_line_t &cmd_line,
+                                       settings_t settings);
 };
 
 #endif // VIEWER_H
