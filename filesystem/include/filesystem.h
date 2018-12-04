@@ -23,11 +23,13 @@ public:
     static FileSystem &getInstance()
     {
         static FileSystem instance;
-        return instance;
-    }
 
-    /// Set route direcory path in paltform native format
-    void setRouteRootDir(const std::string &path);
+        std::string workDir = osgDB::getCurrentWorkingDirectory();
+        std::string tmp = instance.getLevelUpDirectory(workDir, 1);
+        instance.setRouteRootDir(tmp + instance.separator() + "routes");
+
+        return instance;
+    }    
 
     std::string getNativePath(const std::string &path);
 
@@ -44,6 +46,12 @@ private:
     FileSystem() {}
     FileSystem(const FileSystem &) = delete;
     FileSystem &operator=(FileSystem &) = delete;
+
+    /// Set route direcory path in paltform native format
+    void setRouteRootDir(const std::string &path);
+
+    /// Get directory by num_levels levels up
+    std::string getLevelUpDirectory(std::string path, int num_levels);
 };
 
 #endif

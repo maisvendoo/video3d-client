@@ -82,6 +82,7 @@ unix {
 }
 
 INCLUDEPATH += ../include
+INCLUDEPATH += ../filesystem/include
 INCLUDEPATH += ../route-loader/include
 INCLUDEPATH += ../library/include
 INCLUDEPATH += ./include

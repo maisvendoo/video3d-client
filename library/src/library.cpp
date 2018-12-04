@@ -60,11 +60,7 @@ bool Library::load()
 
 #else
 
-    wchar_t *path = new wchar_t[_path.size()];
-    std::mbstowcs(path, _path.c_str(), _path.size());
-    _lib_ptr = LoadLibrary(path);
-
-    delete [] path;
+    _lib_ptr = LoadLibraryA(_path.c_str());
 
     if (_lib_ptr != nullptr)
         return true;
