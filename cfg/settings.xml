@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Config>
 	<Viewer>
+		<posX>50</posX>
+		<posY>50</posY>
 		<Width>1360</Width>
 		<Height>768</Height>
 		<FullScreen>0</FullScreen>
 		<HostAddress>127.0.0.1</HostAddress>
 		<Port>1992</Port>
 		<LocalMode>0</LocalMode>
+		<FovY>30.0</FovY>
+		<zNear>1.0</zNear>
+		<zFar>1000.0</zFar>
+		<ScreenNumber>0</ScreenNumber>
+		<WindowTitle>Video 3D Client</WindowTitle>
+		<WindowDecoration>1</WindowDecoration>
+		<DoubleBuffer>1</DoubleBuffer>
+		<Samples>4</Samples>
 	</Viewer>
 </Config>

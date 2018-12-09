@@ -1,5 +1,22 @@
+//------------------------------------------------------------------------------
+//
+//      Global environment lighting (Sun emulation)
+//      (c) maisvendoo
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Global environment lighting (Sun emulation)
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date
+ */
+
 #include	"lighting.h"
 
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
 void initEnvironmentLight(osg::Group *root,
                           osg::Vec4 color,
                           float power,

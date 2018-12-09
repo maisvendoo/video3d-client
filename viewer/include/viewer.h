@@ -1,14 +1,14 @@
 //------------------------------------------------------------------------------
 //
-//
-//
+//      Video client's window manager
+//      (c) maisvendoo
 //
 //------------------------------------------------------------------------------
 /*!
  * \file
- * \brief
- * \copyright
- * \author
+ * \brief Video client's window manager
+ * \copyright maisvendoo
+ * \author maisvendoo
  * \date
  */
 

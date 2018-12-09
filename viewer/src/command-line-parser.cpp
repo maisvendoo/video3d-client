@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Parsing of command line option
+//      (c) maisvendoo
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Parsing of command line option
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date
+ */
+
 #include    "command-line-parser.h"
 
 //------------------------------------------------------------------------------

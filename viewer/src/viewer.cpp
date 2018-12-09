@@ -100,6 +100,15 @@ settings_t RouteViewer::loadSettings(const std::string &cfg_path) const
         cfg.getValue(secName, "Height", settings.height);
         cfg.getValue(secName, "FullScreen", settings.fullscreen);
         cfg.getValue(secName, "LocalMode", settings.localmode);
+        cfg.getValue(secName, "posX", settings.x);
+        cfg.getValue(secName, "posY", settings.y);
+        cfg.getValue(secName, "FovY", settings.fovy);
+        cfg.getValue(secName, "zNear", settings.zNear);
+        cfg.getValue(secName, "zFar", settings.zFar);
+        cfg.getValue(secName, "ScreenNumber", settings.screen_number);
+        cfg.getValue(secName, "WindowDecoration", settings.window_decoration);
+        cfg.getValue(secName, "DoubleBuffer", settings.double_buffer);
+        cfg.getValue(secName, "Samples", settings.samples);
     }
 
     return settings;
@@ -214,14 +223,14 @@ bool RouteViewer::initDisplay(osgViewer::Viewer *viewer,
     viewer->setSceneData(root.get());
 
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
-    traits->x = 50;
-    traits->y = 50;
+    traits->x = settings.x;
+    traits->y = settings.y;
     traits->width = settings.width;
     traits->height = settings.height;
-    traits->windowName = "Video 3D Client";
-    traits->windowDecoration = true;
-    traits->doubleBuffer = true;
-    traits->samples = 4;
+    traits->windowName = settings.window_title;
+    traits->windowDecoration = settings.window_decoration;
+    traits->doubleBuffer = settings.double_buffer;
+    traits->samples = settings.samples;
 
     osg::ref_ptr<osg::GraphicsContext> gc = osg::GraphicsContext::createGraphicsContext(traits.get());
     osg::Camera *camera = viewer->getCamera();
@@ -233,12 +242,12 @@ bool RouteViewer::initDisplay(osgViewer::Viewer *viewer,
     camera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     double aspect = static_cast<double>(traits->width) / static_cast<double>(traits->height);
-    camera->setProjectionMatrixAsPerspective(30.0, aspect, 1.0, 1000.0);
+    camera->setProjectionMatrixAsPerspective(settings.fovy, aspect, settings.zNear, settings.zFar);
 
     camera->setAllowEventFocus(false);
 
     if (settings.fullscreen)
-        viewer->setUpViewOnSingleScreen(0);
+        viewer->setUpViewOnSingleScreen(settings.screen_number);
 
     return true;
 }
