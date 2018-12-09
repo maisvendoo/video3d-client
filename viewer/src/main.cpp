@@ -5,67 +5,12 @@
 //------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-    RouteViewer testViewer(argc, argv);
+    RouteViewer viewer(argc, argv);
 
-    // Command line parsing
-    osg::ArgumentParser args(&argc, argv);
-    std::string routeDir;
-    args.read("--route", routeDir);                
+    if (viewer.isReady())
+        return viewer.run();
 
-    // Route loading
-    osg::ref_ptr<RouteLoader> scnLoader = loadRouteLoader("../plugins", "zds-route-loader");    
-
-    if (!scnLoader.valid())
-    {
-        std::cout << "Route loder is't created" << std::endl;
-        return -1;
-    }
-
-    scnLoader->load(routeDir);        
-
-    osg::ref_ptr<osg::Group> root = scnLoader->getRoot();
-
-    // Common graphics settings
-    root->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-    root->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
-    root->getOrCreateStateSet()->setMode(GL_ALPHA, osg::StateAttribute::ON);
-    root->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
-
-    osg::ref_ptr<osg::CullFace> cull = new osg::CullFace;
-    cull->setMode(osg::CullFace::BACK);
-    root->getOrCreateStateSet()->setAttributeAndModes(cull, osg::StateAttribute::ON);
-
-    // Set lighting
-    initEnvironmentLight(root.get(),
-                         osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f),
-                         1.0f,
-                         0.0f,
-                         45.0f);
-
-    osgViewer::Viewer viewer;
-
-    viewer.setSceneData(root.get());
-    viewer.getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
-
-    viewer.getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    viewer.setUpViewOnSingleScreen(0);
-
-    viewer.getCamera()->setAllowEventFocus(false);
-    viewer.addEventHandler(scnLoader->getCameraEventHandler(1, 3.0f));
-    viewer.setThreadingModel(osgViewer::Viewer::AutomaticSelection);
-
-    osg::DisplaySettings::instance()->setMinimumNumAccumBits(8, 8, 8, 8);
-    viewer.realize();
-
-    osgViewer::Viewer::Windows windows;
-    viewer.getWindows(windows);
-
-    for (auto it = windows.begin(); it != windows.end(); ++it)
-    {
-        (*it)->add(new MotionBlurOperation(0.1));
-    }
-
-    return viewer.run();
+    return 0;
 }
 
 

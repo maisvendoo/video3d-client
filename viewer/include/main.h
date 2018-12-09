@@ -1,7 +1,9 @@
 #ifndef     MAIN_H
 #define     MAIN_H
 
-#include    <osg/Group>
+//#include    "viewer.h"
+
+/*#include    <osg/Group>
 #include    <osg/BlendFunc>
 #include    <osg/MatrixTransform>
 #include    <osg/CullFace>
@@ -17,7 +19,7 @@
 
 #include    "motion-blur.h"
 
-#include    "library.h"
+#include    "library.h"*/
 
 #include    "viewer.h"
 

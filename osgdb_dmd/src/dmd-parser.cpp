@@ -144,7 +144,7 @@ void readTextureBlock(std::ifstream &stream, dmd_mesh_t &mesh)
         float z = 0;
         ss >> texel.x() >> texel.y() >> z;
 
-        texel.y() = 1.0f - texel.y();
+        //texel.y() = 1.0f - texel.y();
 
         mesh.texcoords->push_back(texel);
     }    
