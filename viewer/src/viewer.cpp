@@ -212,9 +212,30 @@ bool RouteViewer::initDisplay(osgViewer::Viewer *viewer,
         return false;
 
     viewer->setSceneData(root.get());
-    viewer->getCamera()->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
-    viewer->getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    viewer->getCamera()->setAllowEventFocus(false);
+
+    osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
+    traits->x = 50;
+    traits->y = 50;
+    traits->width = settings.width;
+    traits->height = settings.height;
+    traits->windowName = "Video 3D Client";
+    traits->windowDecoration = true;
+    traits->doubleBuffer = true;
+    traits->samples = 4;
+
+    osg::ref_ptr<osg::GraphicsContext> gc = osg::GraphicsContext::createGraphicsContext(traits.get());
+    osg::Camera *camera = viewer->getCamera();
+
+    camera->setGraphicsContext(gc.get());
+    camera->setViewport(new osg::Viewport(0, 0, traits->width, traits->height));
+
+    camera->setClearColor(osg::Vec4(0.63f, 0.80f, 0.97f, 1.0f));
+    camera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    double aspect = static_cast<double>(traits->width) / static_cast<double>(traits->height);
+    camera->setProjectionMatrixAsPerspective(30.0, aspect, 1.0, 1000.0);
+
+    camera->setAllowEventFocus(false);
 
     if (settings.fullscreen)
         viewer->setUpViewOnSingleScreen(0);
