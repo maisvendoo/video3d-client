@@ -19,12 +19,16 @@
 
 #include    "settings.h"
 #include    "command-line-parser.h"
+#include    "qt-events.h"
+#include    "test-qt.h"
 
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-class RouteViewer
+class RouteViewer : public QObject
 {
+    Q_OBJECT
+
 public:
 
     /// Constructor

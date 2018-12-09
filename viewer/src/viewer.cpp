@@ -44,6 +44,15 @@ bool RouteViewer::isReady() const
 //------------------------------------------------------------------------------
 int RouteViewer::run()
 {
+    viewer.addEventHandler(new QtEventsHandler());
+
+    Sender *sender = new Sender();
+    Resiever *resiever = new Resiever();
+
+    connect(sender, &Sender::sendNumber, resiever, &Resiever::resieveNum);
+
+    viewer.addEventHandler(sender);
+
     return viewer.run();
 }
 

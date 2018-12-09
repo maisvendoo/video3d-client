@@ -1,6 +1,8 @@
 TEMPLATE = app
 
-CONFIG -= qt
+CONFIG += qt
+
+Qt += core
 
 TARGET = viewer
 
@@ -87,5 +89,6 @@ INCLUDEPATH += ../route-loader/include
 INCLUDEPATH += ../library/include
 INCLUDEPATH += ./include
 
-HEADERS += $$files(./include/*.h)
+HEADERS += $$files(./include/*.h) \
+    include/test-qt.h
 SOURCES += $$files(./src/*.cpp)
