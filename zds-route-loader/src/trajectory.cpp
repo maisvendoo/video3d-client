@@ -20,7 +20,8 @@
 TrainTrajectory::TrainTrajectory(std::string routeDir,
                                  int direction,
                                  float height)
-    : direction(direction)
+    : coord(0.0f)
+    , direction(direction)
     , height(height)
     , init_yaw(0.0f)
 
@@ -48,7 +49,7 @@ TrainTrajectory::TrainTrajectory(std::string routeDir,
 void TrainTrajectory::update(const traj_element_t &traj_elem, const float &delta_time)
 {
     float t = delta_time / traj_elem.delta_time;
-    float coord = (1 - t) * traj_elem.coord_begin + traj_elem.coord_end * t;
+    coord = (1 - t) * traj_elem.coord_begin + traj_elem.coord_end * t;
 
     position = routePath->getPosition(coord, attitude);
 
@@ -72,4 +73,12 @@ osg::Vec3 TrainTrajectory::getPosition() const
 osg::Vec3 TrainTrajectory::getAttitude() const
 {
     return attitude;
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+float TrainTrajectory::getCurrentCoord() const
+{
+    return coord;
 }

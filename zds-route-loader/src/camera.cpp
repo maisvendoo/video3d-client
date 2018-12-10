@@ -62,7 +62,7 @@ bool RailwayManipulator::handle(const osgGA::GUIEventAdapter &ea,
             traj_element.coord_begin = traj_element.coord_end = te->coord_end;
         else
         {
-            traj_element.coord_begin = traj_element.coord_end;
+            traj_element.coord_begin = train_traj->getCurrentCoord();
             traj_element.coord_end = te->coord_end;
         }
 

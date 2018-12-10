@@ -45,7 +45,11 @@ public:
     /// Get trajectory attitude
     osg::Vec3   getAttitude() const;
 
+    float getCurrentCoord() const;
+
 private:
+
+    float                       coord;
 
     /// Motion direction
     int                         direction;
