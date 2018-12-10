@@ -46,12 +46,7 @@ int RouteViewer::run()
 {
     viewer.addEventHandler(new QtEventsHandler());
 
-    Sender *sender = new Sender();
-    Resiever *resiever = new Resiever();
-
-    connect(sender, &Sender::sendNumber, resiever, &Resiever::resieveNum);
-
-    viewer.addEventHandler(sender);
+    client.init(settings, &viewer);
 
     return viewer.run();
 }
@@ -118,6 +113,7 @@ settings_t RouteViewer::loadSettings(const std::string &cfg_path) const
         cfg.getValue(secName, "WindowDecoration", settings.window_decoration);
         cfg.getValue(secName, "DoubleBuffer", settings.double_buffer);
         cfg.getValue(secName, "Samples", settings.samples);
+        cfg.getValue(secName, "Name", settings.name);
     }
 
     return settings;
@@ -236,7 +232,7 @@ bool RouteViewer::initDisplay(osgViewer::Viewer *viewer,
     traits->y = settings.y;
     traits->width = settings.width;
     traits->height = settings.height;
-    traits->windowName = settings.window_title;
+    traits->windowName = settings.name;
     traits->windowDecoration = settings.window_decoration;
     traits->doubleBuffer = settings.double_buffer;
     traits->samples = settings.samples;

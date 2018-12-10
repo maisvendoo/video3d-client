@@ -18,10 +18,12 @@ struct settings_t
     double          zNear;
     double          zFar;
     unsigned int    screen_number;
-    std::string     window_title;
+    std::string     name;
     bool            window_decoration;
     bool            double_buffer;
     bool            samples;
+    int             reconnect_interval;
+    int             request_interval;
 
     settings_t()
         : route_dir("")
@@ -37,10 +39,12 @@ struct settings_t
         , zNear(1.0)
         , zFar(1000.0)
         , screen_number(0)
-        , window_title("Video 3D Client")
+        , name("TOP")
         , window_decoration(true)
         , double_buffer(true)
         , samples(4)
+        , reconnect_interval(1000)
+        , request_interval(1000)
     {
 
     }

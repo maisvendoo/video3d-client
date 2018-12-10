@@ -13,7 +13,7 @@
 		<zNear>1.0</zNear>
 		<zFar>1000.0</zFar>
 		<ScreenNumber>0</ScreenNumber>
-		<WindowTitle>Video 3D Client</WindowTitle>
+		<Name>TOP</Name>
 		<WindowDecoration>1</WindowDecoration>
 		<DoubleBuffer>1</DoubleBuffer>
 		<Samples>4</Samples>

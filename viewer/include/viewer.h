@@ -20,7 +20,7 @@
 #include    "settings.h"
 #include    "command-line-parser.h"
 #include    "qt-events.h"
-#include    "test-qt.h"
+#include    "network.h"
 
 //------------------------------------------------------------------------------
 //
@@ -55,6 +55,8 @@ protected:
 
     /// OSG scene root node
     osg::ref_ptr<osg::Group>    root;
+
+    NetworkClient               client;
 
     /// Initialization
     bool init(int argc, char *argv[]);   

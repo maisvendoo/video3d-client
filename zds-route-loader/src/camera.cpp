@@ -56,6 +56,19 @@ bool RailwayManipulator::handle(const osgGA::GUIEventAdapter &ea,
 
     case osgGA::GUIEventAdapter::USER:
     {
+        const traj_element_t *te = dynamic_cast<const traj_element_t *>(ea.getUserData());
+
+        if (traj_element.count == 0)
+            traj_element.coord_begin = traj_element.coord_end = te->coord_end;
+        else
+        {
+            traj_element.coord_begin = traj_element.coord_end;
+            traj_element.coord_end = te->coord_end;
+        }
+
+        traj_element.delta_time = te->delta_time;
+        traj_element.count++;
+        ref_time = 0.0;
 
         break;
     }
