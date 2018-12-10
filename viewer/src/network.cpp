@@ -76,11 +76,14 @@ void NetworkClient::onTimerRequester()
     {
         if (tcp_cilent->getBufferSize() == sizeof (server_data_t))
         {
+            // Get received data
             QByteArray array = tcp_cilent->getBuffer();
+            // Copy data to target structure
             memcpy(&server_data, array.data(), sizeof (server_data_t));
 
             if (viewer != nullptr)
             {
+                // Send data to camera trajectory handler
                 traj_element_t *traj_elem = new traj_element_t();
 
                 traj_elem->coord_end = server_data.railway_coord;

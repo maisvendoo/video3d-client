@@ -55,6 +55,9 @@ protected:
     void moveCamera(double ref_time,
                     const traj_element_t &traj_element,
                     osgViewer::Viewer *viewer);
+
+    /// Set data to processed trajectory element
+    void setTrajectoryElement(const traj_element_t *te);
 };
 
 #endif // CAMERA_H

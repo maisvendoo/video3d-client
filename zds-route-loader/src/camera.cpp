@@ -57,18 +57,7 @@ bool RailwayManipulator::handle(const osgGA::GUIEventAdapter &ea,
     case osgGA::GUIEventAdapter::USER:
     {
         const traj_element_t *te = dynamic_cast<const traj_element_t *>(ea.getUserData());
-
-        if (traj_element.count == 0)
-            traj_element.coord_begin = traj_element.coord_end = te->coord_end;
-        else
-        {
-            traj_element.coord_begin = train_traj->getCurrentCoord();
-            traj_element.coord_end = te->coord_end;
-        }
-
-        traj_element.delta_time = te->delta_time;
-        traj_element.count++;
-        ref_time = 0.0;
+        setTrajectoryElement(te);
 
         break;
     }
@@ -101,4 +90,34 @@ void RailwayManipulator::moveCamera(double ref_time,
     matrix *= osg::Matrix::rotate(static_cast<double>(attitude.z()), osg::Vec3(0.0f, 1.0f, 0.0f));
 
     viewer->getCamera()->setViewMatrix(matrix);
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+void RailwayManipulator::setTrajectoryElement(const traj_element_t *te)
+{
+    switch (traj_element.count)
+    {
+    case 0:
+
+        traj_element.coord_begin = traj_element.coord_end = te->coord_end;
+        break;
+
+    case 1:
+
+        traj_element.coord_end = te->coord_end;
+        break;
+
+    default:
+
+        traj_element.coord_begin = train_traj->getCurrentCoord();
+        traj_element.coord_end = te->coord_end;
+        break;
+    }
+
+
+    traj_element.delta_time = te->delta_time;
+    traj_element.count++;
+    ref_time = 0.0;
 }
