@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Network communication with simulator's server
+//      (c) maisvendoo, 10/12/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief
+ * \copyright
+ * \author
+ * \date
+ */
+
 #include    "network.h"
 
 #include    <iostream>
@@ -93,6 +107,7 @@ void NetworkClient::onTimerRequester()
             }
         }
 
+        // Send get data request
         tcp_cilent->sendToServer(ATcp::tcGET);
     }
 }

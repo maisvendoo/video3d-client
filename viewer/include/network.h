@@ -1,15 +1,15 @@
 //------------------------------------------------------------------------------
 //
-//
-//
+//      Network communication with simulator's server
+//      (c) maisvendoo, 10/12/2018
 //
 //------------------------------------------------------------------------------
 /*!
- *
- *
- *
- *
- *
+ * \file
+ * \brief
+ * \copyright
+ * \author
+ * \date
  */
 
 #include    "tcp-client.h"
@@ -22,6 +22,10 @@
 #ifndef     NETWORK_H
 #define     NETWORK_H
 
+/*!
+ * \class
+ * \brief TCP-celint
+ */
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
@@ -31,27 +35,38 @@ class NetworkClient : public QObject
 
 public:
 
+    /// Constructor
     explicit NetworkClient(QObject *parent = Q_NULLPTR);
+
+    /// Destructor
     virtual ~NetworkClient();
 
+    /// Client initialization
     void init(const settings_t &settings, osgViewer::Viewer *viewer);
 
 private:
 
+    /// TCP-client object
     TcpClient   *tcp_cilent;
 
+    /// Pointer to viewer object
     osgViewer::Viewer *viewer;
 
+    /// Timer for connection control
     QTimer      timerRequester;
 
+    /// Data received from server
     server_data_t   server_data;
 
 private slots:
 
+    /// Authorization handler
     void onClientAuthorized();
 
+    /// Disconnection handler
     void onClientDissconnected();
 
+    /// Timer handler
     void onTimerRequester();
 };
 
