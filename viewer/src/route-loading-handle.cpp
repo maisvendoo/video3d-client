@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Route loading handler
+//      (c) maisvendoo, 11/12/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Route loading handler
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 11/12/2018
+ */
+
 #include    "route-loading-handle.h"
 
 #include    "filesystem.h"
@@ -14,9 +28,8 @@
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-RouteLoadingHandle::RouteLoadingHandle(osg::Switch *root)
-    : root(root)
-    , routeRoot(new osg::Group)
+RouteLoadingHandle::RouteLoadingHandle()
+    : routeRoot(new osg::Group)
     , is_loaded(false)
     , cameraHandler(nullptr)
     , current_route_id(0)
@@ -63,10 +76,12 @@ bool RouteLoadingHandle::handle(const osgGA::GUIEventAdapter &ea,
 
                 if (routeRoot != nullptr)
                 {
+                    // Clear scene
                     unsigned int n = routeRoot->getNumChildren();
                     routeRoot->removeChildren(0, n);
                 }
 
+                // Clear camera motion handler
                 if (cameraHandler != nullptr)
                     viewer->removeEventHandler(cameraHandler);
 
@@ -114,7 +129,8 @@ bool RouteLoadingHandle::loadRoutesInfo(std::string path)
 
         if (route_info.id != 0)
         {
-            routes_info.insert(std::pair<unsigned int, route_info_t>(route_info.id, route_info));
+            routes_info.insert(std::pair<unsigned int,
+                               route_info_t>(route_info.id, route_info));
         }
     }
 
@@ -124,7 +140,8 @@ bool RouteLoadingHandle::loadRoutesInfo(std::string path)
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-bool RouteLoadingHandle::loadRoute(const std::string &routeDir, osgViewer::Viewer *viewer)
+bool RouteLoadingHandle::loadRoute(const std::string &routeDir,
+                                   osgViewer::Viewer *viewer)
 {
     if (routeDir.empty())
         return false;

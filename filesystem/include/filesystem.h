@@ -28,6 +28,7 @@ public:
         std::string tmp = instance.getLevelUpDirectory(workDir, 1);
         instance.setRouteRootDir(tmp + "routes");
         instance.setConfigDir(tmp + "cfg");
+        instance.setLogsDir(tmp + "logs");
 
         return instance;
     }    
@@ -39,6 +40,8 @@ public:
 
     std::string getConfigDir() const;
 
+    std::string getLogsDir() const;
+
     /// Get native path separator
     char separator() const;
 
@@ -46,6 +49,7 @@ private:
 
     std::string routeRootDir;
     std::string configDir;
+    std::string logsDir;
 
     FileSystem() {}
     FileSystem(const FileSystem &) = delete;
@@ -56,6 +60,8 @@ private:
 
     /// Set config directory path
     void setConfigDir(const std::string &path);
+
+    void setLogsDir(const std::string &path);
 
     /// Get directory by num_levels levels up
     std::string getLevelUpDirectory(std::string path, int num_levels);

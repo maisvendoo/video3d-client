@@ -1,3 +1,17 @@
+//------------------------------------------------------------------------------
+//
+//      Route loading handler
+//      (c) maisvendoo, 11/12/2018
+//
+//------------------------------------------------------------------------------
+/*!
+ * \file
+ * \brief Route loading handler
+ * \copyright maisvendoo
+ * \author maisvendoo
+ * \date 11/12/2018
+ */
+
 #ifndef     ROUTE_LOADING_HANDLE_H
 #define     ROUTE_LOADING_HANDLE_H
 
@@ -6,26 +20,39 @@
 
 #include    "route-info.h"
 
+/*!
+ * \file
+ * \brief Route loading handler
+ */
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
 class RouteLoadingHandle : public osgGA::GUIEventHandler
 {
 public:
 
-    RouteLoadingHandle(osg::Switch *root);
+    /// Constructor
+    RouteLoadingHandle();
 
-    virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
+    /// Destructor
+    virtual bool handle(const osgGA::GUIEventAdapter &ea,
+                        osgGA::GUIActionAdapter &aa);
 
-private:
+private:    
 
-    osg::ref_ptr<osg::Switch> root;
+    /// Route static scene root node
+    osg::ref_ptr<osg::Group>    routeRoot;
 
-    osg::ref_ptr<osg::Group> routeRoot;
+    /// Route loading flag
+    bool                        is_loaded;
 
-    bool                      is_loaded;
+    /// Current camera handler
+    osgGA::GUIEventHandler      *cameraHandler;
 
-    osgGA::GUIEventHandler *cameraHandler;
+    /// Current route ID
+    unsigned int                current_route_id;
 
-    unsigned int current_route_id;
-
+    /// Routes list info
     std::map<unsigned int, route_info_t> routes_info;
 
 

@@ -15,6 +15,7 @@
 #include    "lighting.h"
 #include    "motion-blur.h"
 #include    "route-loading-handle.h"
+#include    "log.h"
 
 //------------------------------------------------------------------------------
 //
@@ -48,7 +49,7 @@ bool RouteViewer::isReady() const
 int RouteViewer::run()
 {
     viewer.addEventHandler(new QtEventsHandler());
-    viewer.addEventHandler(new RouteLoadingHandle(root.get()));
+    viewer.addEventHandler(new RouteLoadingHandle());
 
     client.init(settings, &viewer);    
 
@@ -60,11 +61,11 @@ int RouteViewer::run()
 //------------------------------------------------------------------------------
 bool RouteViewer::init(int argc, char *argv[])
 {
-    FileSystem &fs = FileSystem::getInstance();
+    FileSystem &fs = FileSystem::getInstance();    
 
-    // Read aviable routes list
-    if (!loadRoutesInfo(fs.getConfigDir() + fs.separator() + "routes-list.xml"))
-        return false;
+    // Notify configure
+    osg::setNotifyLevel(osg::WARN);
+    osg::setNotifyHandler(new LogFileHandler(fs.getLogsDir() + fs.separator() + "startup.log"));
 
     // Read settings from config file
     settings = loadSettings(fs.getConfigDir() + fs.separator() + "settings.xml");
@@ -114,6 +115,9 @@ settings_t RouteViewer::loadSettings(const std::string &cfg_path) const
         cfg.getValue(secName, "DoubleBuffer", settings.double_buffer);
         cfg.getValue(secName, "Samples", settings.samples);
         cfg.getValue(secName, "Name", settings.name);
+        cfg.getValue(secName, "RequestInterval", settings.request_interval);
+        cfg.getValue(secName, "MotionBlur", settings.mb_persistence);
+        cfg.getValue(secName, "ReconnectInterval", settings.reconnect_interval);
     }
 
     return settings;
@@ -147,85 +151,11 @@ void RouteViewer::overrideSettingsByCommandLine(const cmd_line_t &cmd_line,
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-bool RouteViewer::loadRoute(const std::string &routeDir)
-{
-    if (routeDir.empty())
-        return false;
-
-    FileSystem &fs = FileSystem::getInstance();
-    std::string routeType = osgDB::findDataFile(routeDir + fs.separator() + "route-type");
-
-    if (routeType.empty())
-        return false;
-
-    std::ifstream stream(routeType);
-
-    if (!stream.is_open())
-        return false;
-
-    std::string routeExt = "";
-    stream >> routeExt;
-
-    if (routeExt.empty())
-        return false;
-
-    std::string routeLoaderPlugin = routeExt + "-route-loader";
-
-    osg::ref_ptr<RouteLoader> loader = loadRouteLoader("../plugins", routeLoaderPlugin);
-
-    if (!loader.valid())
-        return false;
-
-    loader->load(routeDir);
-    routeRoot = loader->getRoot();
-
-    viewer.addEventHandler(loader->getCameraEventHandler(1, 3.0f));
-
-    return true;
-}
-
-//------------------------------------------------------------------------------
-//
-//------------------------------------------------------------------------------
-bool RouteViewer::initEngineSettings(osg::Group *root)
-{
-    if (root == nullptr)
-        return false;
-
-    // Common graphics settings
-    osg::StateSet *stateset = root->getOrCreateStateSet();
-    osg::BlendFunc *blendFunc = new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    stateset->setAttributeAndModes(blendFunc);
-    stateset->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
-    stateset->setMode(GL_ALPHA, osg::StateAttribute::ON);
-    stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
-    stateset->setMode(GL_LIGHTING, osg::StateAttribute::ON);
-    stateset->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
-
-    osg::ref_ptr<osg::CullFace> cull = new osg::CullFace;
-    cull->setMode(osg::CullFace::BACK);
-    stateset->setAttributeAndModes(cull.get(), osg::StateAttribute::ON);
-
-    // Set lighting
-    initEnvironmentLight(root,
-                         osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f),
-                         1.0f,
-                         0.0f,
-                         90.0f);
-
-    return true;
-}
-
-//------------------------------------------------------------------------------
-//
-//------------------------------------------------------------------------------
 bool RouteViewer::initDisplay(osgViewer::Viewer *viewer,
                               const settings_t &settings)
 {
     if (viewer == nullptr)
         return false;
-
-    viewer->setSceneData(routeRoot.get());
 
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
     traits->x = settings.x;
@@ -275,59 +205,7 @@ bool RouteViewer::initMotionBlurEffect(osgViewer::Viewer *viewer,
     viewer->getWindows(windows);
 
     for (auto it = windows.begin(); it != windows.end(); ++it)
-        (*it)->add(new MotionBlurOperation(0.1));
-
-    return true;
-}
-
-//------------------------------------------------------------------------------
-//
-//------------------------------------------------------------------------------
-bool RouteViewer::loadRoutesInfo(std::string path)
-{
-    if (path.empty())
-        return false;
-
-    ConfigReader cfg(path);
-
-    if (!cfg.isOpenned())
-        return false;
-
-    osgDB::XmlNode *config_node = cfg.getConfigNode();
-
-    if (config_node == nullptr)
-        return false;
-
-    for (auto it = config_node->children.begin(); it != config_node->children.end(); ++it)
-    {
-        route_info_t route_info;
-
-        osgDB::XmlNode *id = cfg.findSection(*it, "id");
-        getValue(id->contents, route_info.id);
-
-        osgDB::XmlNode *name = cfg.findSection(*it, "Name");
-        getValue(name->contents, route_info.name);
-
-        if (route_info.id != 0)
-        {
-            routes_info.insert(std::pair<unsigned int, route_info_t>(route_info.id, route_info));
-        }
-    }
-
-    return true;
-}
-
-//------------------------------------------------------------------------------
-//
-//------------------------------------------------------------------------------
-bool RouteViewer::loadRouteByID(unsigned int id)
-{
-    FileSystem &fs = FileSystem::getInstance();
-    route_info_t route_info = routes_info[id];
-    std::string routePath = fs.getRouteRootDir() + fs.separator() + route_info.name;
-
-    if (!loadRoute(routePath))
-        return false;
+        (*it)->add(new MotionBlurOperation(settings.mb_persistence));
 
     return true;
 }

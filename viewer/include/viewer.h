@@ -54,15 +54,7 @@ protected:
     settings_t                  settings;
 
     /// OSG viewer object
-    osgViewer::Viewer           viewer;
-
-    /// OSG scene root node
-    osg::ref_ptr<osg::Group>    routeRoot;
-
-    osg::ref_ptr<osg::Switch>   root;
-
-    /// Routes info list
-    std::map<unsigned int, route_info_t> routes_info;
+    osgViewer::Viewer           viewer;          
 
     /// TCP-client
     NetworkClient               client;
@@ -75,25 +67,13 @@ protected:
 
     /// Override settings from command line
     void overrideSettingsByCommandLine(const cmd_line_t &cmd_line,
-                                       settings_t settings);
-
-    /// Load route form directory
-    bool loadRoute(const std::string &routeDir);
-
-    /// Init common graphical engine settings
-    bool initEngineSettings(osg::Group *routeRoot);
+                                       settings_t settings);    
 
     /// Init display
     bool initDisplay(osgViewer::Viewer *viewer, const settings_t &settings);
 
     /// Init motion blur
-    bool initMotionBlurEffect(osgViewer::Viewer *viewer, const settings_t &settings);
-
-    /// Load routes info list
-    bool loadRoutesInfo(std::string path);
-
-    /// Load route by ID
-    bool loadRouteByID(unsigned int id);
+    bool initMotionBlurEffect(osgViewer::Viewer *viewer, const settings_t &settings);    
 };
 
 #endif // VIEWER_H

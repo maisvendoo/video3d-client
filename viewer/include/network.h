@@ -58,6 +58,8 @@ private:
     /// Data received from server
     server_data_t   server_data;
 
+    int request_interval;
+
 private slots:
 
     /// Authorization handler

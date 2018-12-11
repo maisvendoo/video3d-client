@@ -33,7 +33,10 @@ void createTexture(const std::string &texture_path, osg::Texture2D *texture)
                                                osgDB::CaseSensitivity::CASE_INSENSITIVE);
 
     if (fileName.empty())
+    {
+        OSG_WARN << "NOT FOUND: " << texture_path << std::endl;
         return;
+    }
 
     // Load image from file
     osg::ref_ptr<osg::Image> image = osgDB::readImageFile(fileName);
@@ -67,7 +70,10 @@ osg::PagedLOD *createLODNode(const model_info_t &model_info)
                                                osgDB::CaseSensitivity::CASE_INSENSITIVE);
 
     if (fileName.empty())
+    {
+        OSG_WARN << "NOT FOUND: " << model_info.filepath << std::endl;
         return nullptr;
+    }
 
     // Prepare model loading
     osg::ref_ptr<osg::PagedLOD> pagedLOD = new osg::PagedLOD;

@@ -61,7 +61,10 @@ bool RailwayManipulator::handle(const osgGA::GUIEventAdapter &ea,
         if (te->route_id != 0)
             setTrajectoryElement(te);
         else
+        {
             traj_element.count = 0;
+            ref_time = 0.0;
+        }
 
         break;
     }
@@ -106,22 +109,24 @@ void RailwayManipulator::setTrajectoryElement(const traj_element_t *te)
     case 0:
 
         traj_element.coord_begin = traj_element.coord_end = te->coord_end;
+        traj_element.delta_time = te->delta_time;
         break;
 
     case 1:
 
         traj_element.coord_end = te->coord_end;
+        traj_element.delta_time = te->delta_time;
         break;
 
     default:
 
         traj_element.coord_begin = train_traj->getCurrentCoord();
         traj_element.coord_end = te->coord_end;
+        traj_element.delta_time = te->delta_time;
+
         break;
     }
 
-
-    traj_element.delta_time = te->delta_time;
     traj_element.count++;
     ref_time = 0.0;
 }

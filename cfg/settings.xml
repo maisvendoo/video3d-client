@@ -5,7 +5,7 @@
 		<posY>50</posY>
 		<Width>1360</Width>
 		<Height>768</Height>
-		<FullScreen>0</FullScreen>
+		<FullScreen>1</FullScreen>
 		<HostAddress>127.0.0.1</HostAddress>
 		<Port>1992</Port>
 		<LocalMode>0</LocalMode>
@@ -13,9 +13,12 @@
 		<zNear>1.0</zNear>
 		<zFar>1000.0</zFar>
 		<ScreenNumber>0</ScreenNumber>
-		<Name>TOP</Name>
+		<Name>videosystem</Name>
 		<WindowDecoration>1</WindowDecoration>
 		<DoubleBuffer>1</DoubleBuffer>
 		<Samples>4</Samples>
+		<RequestInterval>2000</RequestInterval>
+		<ReconnectInterval>1000</ReconnectInterval>
+		<MotionBlur>0.05</MotionBlur>
 	</Viewer>
 </Config>

@@ -42,6 +42,8 @@ NetworkClient::~NetworkClient()
 //------------------------------------------------------------------------------
 void NetworkClient::init(const settings_t &settings, osgViewer::Viewer *viewer)
 {
+    request_interval = settings.request_interval;
+
     this->viewer = viewer;
 
     // Initialize requester timer
@@ -106,7 +108,7 @@ void NetworkClient::onTimerRequester()
 
                 traj_elem->route_id = server_data.route_id;
                 traj_elem->coord_end = server_data.railway_coord;
-                traj_elem->delta_time = static_cast<float>(server_data.deltaTime) / 1000.0f;
+                traj_elem->delta_time = static_cast<float>(request_interval) / 1000.0f;
 
                 viewer->getEventQueue()->userEvent(traj_elem);
             }

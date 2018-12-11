@@ -12,4 +12,12 @@
 		<id>3</id>
 		<Name>konotop-suchinichi</Name>		
 	</Route>
+	<Route>
+		<id>4</id>
+		<Name>rostov-lichaya</Name>
+	</Route>
+	<Route>
+		<id>5</id>
+		<Name>rostov-goryachiy_klyuch</Name>
+	</Route>
 </Config>

@@ -41,7 +41,7 @@ struct model_info_t
     bool        mipmap;
 
     model_info_t()
-        : view_distance(1500.0f)
+        : view_distance(1000.0f)
         , name("")
         , filepath("")
         , texture_path("")

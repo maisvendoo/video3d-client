@@ -19,6 +19,14 @@ void FileSystem::setConfigDir(const std::string &path)
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
+void FileSystem::setLogsDir(const std::string &path)
+{
+    logsDir = getNativePath(path);
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
 std::string FileSystem::getRouteRootDir() const
 {
     return routeRootDir;
@@ -30,6 +38,14 @@ std::string FileSystem::getRouteRootDir() const
 std::string FileSystem::getConfigDir() const
 {
     return configDir;
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+std::string FileSystem::getLogsDir() const
+{
+    return logsDir;
 }
 
 //------------------------------------------------------------------------------
