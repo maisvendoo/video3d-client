@@ -21,6 +21,7 @@
 #include    "command-line-parser.h"
 #include    "qt-events.h"
 #include    "network.h"
+#include    "route-info.h"
 
 //------------------------------------------------------------------------------
 //
@@ -45,6 +46,8 @@ public:
 
 protected:
 
+    unsigned int                current_route_id;
+
     /// Viewer ready flag
     bool                        is_ready;
     /// Viewer settings
@@ -54,8 +57,14 @@ protected:
     osgViewer::Viewer           viewer;
 
     /// OSG scene root node
-    osg::ref_ptr<osg::Group>    root;
+    osg::ref_ptr<osg::Group>    routeRoot;
 
+    osg::ref_ptr<osg::Switch>   root;
+
+    /// Routes info list
+    std::map<unsigned int, route_info_t> routes_info;
+
+    /// TCP-client
     NetworkClient               client;
 
     /// Initialization
@@ -72,13 +81,19 @@ protected:
     bool loadRoute(const std::string &routeDir);
 
     /// Init common graphical engine settings
-    bool initEngineSettings(osg::Group *root);
+    bool initEngineSettings(osg::Group *routeRoot);
 
     /// Init display
     bool initDisplay(osgViewer::Viewer *viewer, const settings_t &settings);
 
     /// Init motion blur
     bool initMotionBlurEffect(osgViewer::Viewer *viewer, const settings_t &settings);
+
+    /// Load routes info list
+    bool loadRoutesInfo(std::string path);
+
+    /// Load route by ID
+    bool loadRouteByID(unsigned int id);
 };
 
 #endif // VIEWER_H

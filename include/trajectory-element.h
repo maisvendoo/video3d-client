@@ -25,13 +25,15 @@
 //------------------------------------------------------------------------------
 struct traj_element_t : public osg::Referenced
 {
+    unsigned int    route_id;
     float           coord_begin;
     float           coord_end;
     float           delta_time;
     unsigned long   count;
 
     traj_element_t()
-        : coord_begin(1000.0f)
+        : route_id(0)
+        , coord_begin(1000.0f)
         , coord_end(1000.0f)
         , delta_time(3600.0f)
         , count(0)

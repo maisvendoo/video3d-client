@@ -3,6 +3,7 @@
 #include    <osg/BlendFunc>
 #include    <osg/CullFace>
 #include    <osg/GraphicsContext>
+#include    <osgDB/ReadFile>
 
 #include    "filesystem.h"
 #include    "config-reader.h"
@@ -18,7 +19,8 @@
 //
 //------------------------------------------------------------------------------
 RouteViewer::RouteViewer(int argc, char *argv[])
-  : is_ready(false)
+  : current_route_id(0),
+    is_ready(false)
 {
     is_ready = init(argc, argv);
 }
@@ -58,21 +60,30 @@ bool RouteViewer::init(int argc, char *argv[])
 {
     FileSystem &fs = FileSystem::getInstance();
 
+    // Read aviable routes list
+    if (!loadRoutesInfo(fs.getConfigDir() + fs.separator() + "routes-list.xml"))
+        return false;
+
     // Read settings from config file
     settings = loadSettings(fs.getConfigDir() + fs.separator() + "settings.xml");
 
     // Parse command line
     CommandLineParser parser(argc, argv);
     cmd_line_t cmd_line = parser.getCommadLine();
-    overrideSettingsByCommandLine(cmd_line, settings);    
+    overrideSettingsByCommandLine(cmd_line, settings);        
+
+    root = new osg::Switch;
+    viewer.setSceneData(root.get());
 
     // Load selected route
-    if (!loadRoute(cmd_line.route_dir.value))
-        return false;
+    if (loadRouteByID(4))
+    {
+        root->addChild(routeRoot.get());
 
-    // Init graphical engine settings
-    if (!initEngineSettings(root.get()))
-        return false;
+        // Init graphical engine settings
+        if (!initEngineSettings(routeRoot.get()))
+            return false;
+    }
 
     // Init display settings
     if (!initDisplay(&viewer, settings))
@@ -177,7 +188,7 @@ bool RouteViewer::loadRoute(const std::string &routeDir)
         return false;
 
     loader->load(routeDir);
-    root = loader->getRoot();
+    routeRoot = loader->getRoot();
 
     viewer.addEventHandler(loader->getCameraEventHandler(1, 3.0f));
 
@@ -225,7 +236,7 @@ bool RouteViewer::initDisplay(osgViewer::Viewer *viewer,
     if (viewer == nullptr)
         return false;
 
-    viewer->setSceneData(root.get());
+    viewer->setSceneData(routeRoot.get());
 
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
     traits->x = settings.x;
@@ -276,6 +287,58 @@ bool RouteViewer::initMotionBlurEffect(osgViewer::Viewer *viewer,
 
     for (auto it = windows.begin(); it != windows.end(); ++it)
         (*it)->add(new MotionBlurOperation(0.1));
+
+    return true;
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+bool RouteViewer::loadRoutesInfo(std::string path)
+{
+    if (path.empty())
+        return false;
+
+    ConfigReader cfg(path);
+
+    if (!cfg.isOpenned())
+        return false;
+
+    osgDB::XmlNode *config_node = cfg.getConfigNode();
+
+    if (config_node == nullptr)
+        return false;
+
+    for (auto it = config_node->children.begin(); it != config_node->children.end(); ++it)
+    {
+        route_info_t route_info;
+
+        osgDB::XmlNode *id = cfg.findSection(*it, "id");
+        getValue(id->contents, route_info.id);
+
+        osgDB::XmlNode *name = cfg.findSection(*it, "Name");
+        getValue(name->contents, route_info.name);
+
+        if (route_info.id != 0)
+        {
+            routes_info.insert(std::pair<unsigned int, route_info_t>(route_info.id, route_info));
+        }
+    }
+
+    return true;
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+bool RouteViewer::loadRouteByID(unsigned int id)
+{
+    FileSystem &fs = FileSystem::getInstance();
+    route_info_t route_info = routes_info[id];
+    std::string routePath = fs.getRouteRootDir() + fs.separator() + route_info.name;
+
+    if (!loadRoute(routePath))
+        return false;
 
     return true;
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<Route>
+		<id>1</id>
+		<Name>bataysk-lichaya</Name>		
+	</Route>
+	<Route>
+		<id>2</id>
+		<Name>belorechensk-tuapse</Name>		
+	</Route>
+	<Route>
+		<id>3</id>
+		<Name>konotop-suchinichi</Name>		
+	</Route>
+</Config>
