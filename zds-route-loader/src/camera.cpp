@@ -57,7 +57,11 @@ bool RailwayManipulator::handle(const osgGA::GUIEventAdapter &ea,
     case osgGA::GUIEventAdapter::USER:
     {
         const traj_element_t *te = dynamic_cast<const traj_element_t *>(ea.getUserData());
-        setTrajectoryElement(te);
+
+        if (te->route_id != 0)
+            setTrajectoryElement(te);
+        else
+            traj_element.count = 0;
 
         break;
     }

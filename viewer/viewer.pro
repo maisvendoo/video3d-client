@@ -94,5 +94,6 @@ INCLUDEPATH += ../library/include
 INCLUDEPATH += ../tcp-connection/include
 INCLUDEPATH += ./include
 
-HEADERS += $$files(./include/*.h)
+HEADERS += $$files(./include/*.h) \
+    include/get-value.h
 SOURCES += $$files(./src/*.cpp)

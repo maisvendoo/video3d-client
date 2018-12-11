@@ -14,6 +14,7 @@
 #include    "abstract-loader.h"
 #include    "lighting.h"
 #include    "motion-blur.h"
+#include    "route-loading-handle.h"
 
 //------------------------------------------------------------------------------
 //
@@ -47,8 +48,9 @@ bool RouteViewer::isReady() const
 int RouteViewer::run()
 {
     viewer.addEventHandler(new QtEventsHandler());
+    viewer.addEventHandler(new RouteLoadingHandle(root.get()));
 
-    client.init(settings, &viewer);
+    client.init(settings, &viewer);    
 
     return viewer.run();
 }
@@ -70,20 +72,7 @@ bool RouteViewer::init(int argc, char *argv[])
     // Parse command line
     CommandLineParser parser(argc, argv);
     cmd_line_t cmd_line = parser.getCommadLine();
-    overrideSettingsByCommandLine(cmd_line, settings);        
-
-    root = new osg::Switch;
-    viewer.setSceneData(root.get());
-
-    // Load selected route
-    if (loadRouteByID(4))
-    {
-        root->addChild(routeRoot.get());
-
-        // Init graphical engine settings
-        if (!initEngineSettings(routeRoot.get()))
-            return false;
-    }
+    overrideSettingsByCommandLine(cmd_line, settings);            
 
     // Init display settings
     if (!initDisplay(&viewer, settings))

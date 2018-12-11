@@ -78,7 +78,11 @@ void NetworkClient::onClientAuthorized()
 //------------------------------------------------------------------------------
 void NetworkClient::onClientDissconnected()
 {
-    timerRequester.stop();
+    traj_element_t *traj_elem = new traj_element_t();
+    traj_elem->route_id = 0;
+    viewer->getEventQueue()->userEvent(traj_elem);
+
+    timerRequester.stop();    
 }
 
 //------------------------------------------------------------------------------
@@ -100,6 +104,7 @@ void NetworkClient::onTimerRequester()
                 // Send data to camera trajectory handler
                 traj_element_t *traj_elem = new traj_element_t();
 
+                traj_elem->route_id = server_data.route_id;
                 traj_elem->coord_end = server_data.railway_coord;
                 traj_elem->delta_time = static_cast<float>(server_data.deltaTime) / 1000.0f;
 
